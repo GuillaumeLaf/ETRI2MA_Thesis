@@ -1,0 +1,1 @@
+Stock and Watson (2002) : Forecasting using principal components from a large number of predictors
