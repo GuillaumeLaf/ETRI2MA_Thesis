@@ -9,7 +9,7 @@ Focus on static factors model but still makes the distinction with (generalized)
 
 At the beginning the simplest models were studied (Anderson - 1984) (Anderson & Rubin - 1956) (Lawley & Maxwell - 1971) : 
 + factors and errors assumed serially and cross-sectionally uncorrelated.
-+ **N fixed and T tends to inf.
++ *N* fixed and T tends to inf.
 + factors and errors are normally distributed.
 
-"[An] important characteristic of a static model with **r factors is that the largest **r population eigenvalues of Sigma increase with **N, while the remaining eigenvalues of Sigma, as well as all eigenvalues of Omega, are bounded
+"[An] important characteristic of a static model with *r* factors is that the largest *r* population eigenvalues of Sigma increase with *N*, while the remaining eigenvalues of Sigma, as well as all eigenvalues of Omega, are bounded
