@@ -18,3 +18,7 @@ Major problem with nonstationary process = how to have an asymptotic reasoning ?
 (since "extending the process into the future will not give any info on the behavior of the process at the beginning of the interval").
 
 AR process with time-varying coefficients are locally stationary (see Dahlhaus 1996).
+
+He uses another criterion than LSE or MLE which is the Whittle likelihood generalized to nonstationary processes (estimation in frequency domain).
+Note that the Whittle likelihood allows one to approximate a Gaussian likelihood for a model but one doesn't need to get the covariance matrix of the observations
+(which may be difficult to compute and inverse given large sample size).
