@@ -4,3 +4,4 @@ This file serves as a notebook for general writing tips.
 In the introduction, 
   + clearly states the contributions of the paper.
   + How is the paper organized.
+  + state the problem your are trying to solve and why the method you propose is one solution.
