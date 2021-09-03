@@ -5,3 +5,5 @@ In the introduction,
   + clearly states the contributions of the paper.
   + How is the paper organized.
   + state the problem your are trying to solve and why the method you propose is one solution.
+
+state if an assumption is strong or not and why.
