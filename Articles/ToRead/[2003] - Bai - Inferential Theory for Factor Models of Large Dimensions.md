@@ -16,3 +16,5 @@ The principal component estimator is the same as the non-linear least square wit
 They allow for non-stationarity in the data by allowing heteroskedasticity.
 
 They don't assume a particular rotation matrix for the factor model. They prove convergence for the estimator of "F tilde" to "F * H" (with H being a chosen rotation matrix. They noted that this is not restrictive since knowing F * H is as good as knowing F (p145) because they span the same space.
+
+
