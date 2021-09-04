@@ -7,3 +7,6 @@ In the introduction,
   + state the problem your are trying to solve and why the method you propose is one solution.
 
 state if an assumption is strong or not and why.
+
+In the conclusion, 
+ + What remains to be done and why (poses further possible developments).
