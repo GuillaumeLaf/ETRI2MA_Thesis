@@ -10,3 +10,5 @@ state if an assumption is strong or not and why.
 
 In the conclusion, 
  + What remains to be done and why (poses further possible developments).
+
+"Most existing work on ... does not give ...
