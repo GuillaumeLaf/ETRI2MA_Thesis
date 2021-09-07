@@ -23,3 +23,12 @@ The DWT could also be modified by changing the decimating operator, instead of t
 
 We can even alternate between the choice of decimating operator for different scale (we inverse the transform by using the corresponding inverse operators). Each sequence of choice will give us a different result (since it is a different basis). The authors call this transform, the **"epsilon-decimated DWT"**.
 
+They show that the basis vectors of the "espilon-decimated DWT" can be obtained from those of the standard DWT by applying a particular shift operator to the original signal.
+
+Next they demysified the **"Continuous Wavelet Transform"**.
+They remind the *scaling function* in multiresolution analysis. This function is also known as the father wavelet. It depends on the low pass filter "h".
+Conversely, the *mother wavelet* depends on the high-pass filter "g".
+
+The filters "h" and "g" are exactly the same as in the multiresolution analysis. In other words, in wavelet theory we need special functions (father and mother wavelets) which depends on some coefficients in the linear combination property. And it turns out that the quadrature mirror filters are exactly the required coefficients. Consequently, we can perform a multiresolution analysis of any function in L2 with those father and mother wavelets (dilated and translated).
+
+The detail coefficients gives information about the function at a particular scale and near a point in time-domain.
