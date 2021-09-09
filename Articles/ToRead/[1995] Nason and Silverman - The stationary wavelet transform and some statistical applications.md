@@ -53,4 +53,9 @@ They briefly discuss the **local autocovariance**.
 (((side note : The Wigner distribution function provides the highest possible temporal vs frequency resolution which is mathematically possible within the limitation of the uncertainty principle.))). The wavelet spectrum can be defined in terms of the Wigner distribution. This function is also simply the local spectrum of the Fourier transform of the local autocovariance. 
 
 **I haven't quite understood pages 294 and 295 about the behavior of the wavelet spectrum/periodogram with a perfect sine wave signal.**
+AFter re-reading this difficult part more carefully, I have understood a few things. 
+The filtering required to smooth the wavelet periodogram must depend on the scale and should try to remove higher frequencies (see p295).
+The wavelet periodogram consists of a signal and an additive noise part. The smoothing must try to remove this noise. 
+ 
+ ** I still don't understand everything about this theoretical example.**
 
