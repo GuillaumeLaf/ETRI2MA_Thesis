@@ -12,3 +12,5 @@ In the conclusion,
  + What remains to be done and why (poses further possible developments).
 
 "Most existing work on ... does not give ...
+
+"Some heuristic insight into the behavior of the wavelet spectrum and periodogram may be obtained by considering the case where the series consists of a pure sinusoidal signal at a particular frequency" (Nason and Silverman 1995).
