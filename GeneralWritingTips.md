@@ -13,4 +13,4 @@ In the conclusion,
 
 "Most existing work on ... does not give ...
 
-"Some heuristic insight into the behavior of the wavelet spectrum and periodogram may be obtained by considering the case where the series consists of a pure sinusoidal signal at a particular frequency" (Nason and Silverman 1995).
+"Some heuristic insight into the behavior of the wavelet spectrum and periodogram may be obtained by considering the case where the series consists of a pure sinusoidal signal at a particular frequency" (Nason and Silverman 1995). (Exemplify the model by a theoretical case).
