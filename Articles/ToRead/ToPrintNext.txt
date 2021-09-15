@@ -1,4 +1,4 @@
 [2018] Taylor et al. - Multivariate Locally Stationary Wavelet Process analysis with the mvLSW R Package
 [2015] Cho and Fryzlewicz - Multiple-change-point detection for high dimensional time series via sparsified binary segmentation
-[2010] Sanderson et al. - Estimating linear dependence between nonstationary time series using locally stationary wavelet model
+!![2010] Sanderson et al. - Estimating linear dependence between nonstationary time series using locally stationary wavelet model
 [1996] von Sachs and Schneider - Wavelet smoothing of evolutionary spectra by nonlinear thresholding
