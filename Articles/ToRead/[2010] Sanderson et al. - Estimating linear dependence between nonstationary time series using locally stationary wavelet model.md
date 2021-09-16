@@ -21,3 +21,8 @@ The autocorrelation wavelets in the coherence formula have the same role as the 
 
 Practical considerations : The estimators can be unstable. They could output non-positive values for the specta (which is not possible). 
 They recommend smoothing along scales in addition to time. This will introduce some bias but we can limit this bias. This additional smoothing also reduces the variance of the estimator further. 
+
+
+
+
+**Percival and Walden 2000 : "approximation that a wavelet scale j, corresponds to a Fourier frequencies [...].**
