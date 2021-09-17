@@ -14,4 +14,6 @@ Their exists a theory for choosing the best minimal set of elements in the decom
  
  With the MODWT we can make a analysis of the variance and covariances of multiple series.
  
+ Since we have an estimates of the variance via wavelets, we can plug this estimate in models which require the variance. The authors exemplify this fact by estimating the fractional degree of an ARFIMA.
+ 
  
