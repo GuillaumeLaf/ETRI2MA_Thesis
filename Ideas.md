@@ -7,3 +7,6 @@ This file contains my ideas concerning my work. They may totally be wrong but th
 + Since the coefficients are not uniquely defined by the spectrum is, then I should try to work with the square root of the spectrum (cheat to recover the uniqueness).
 
 + find a way of correctly estimating a positive semi-definite matrix (since correcting the raw periodogram may lead to negative values of variances). Find conditions of correction matrix which guarantee the positiveness of the periodogram. The best case would be that the conditioned correction matrix converges to the a.c. wavelet inner product matrix.
+Note : instead of having a biaised estimate by an approximate correction matrix, we could find  asuitable smoothing procedure which produces only positive values.
+
+
