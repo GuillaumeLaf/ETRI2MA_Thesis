@@ -7,3 +7,7 @@ The remind the importance of the correction which allow to correct for the scatt
 The algorithm discrebed here builds upon the scale recursive formula for discrete wavelets.
 
 The autocorrelation wavelet has several properties : compactly supported, symmetric at 0, positive definite function.
+
+The authors divide the construction of the matrix by diagonals.
+
+
