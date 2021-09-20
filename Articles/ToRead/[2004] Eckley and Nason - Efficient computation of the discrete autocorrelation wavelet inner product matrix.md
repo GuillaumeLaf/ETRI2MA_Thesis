@@ -11,3 +11,6 @@ The autocorrelation wavelet has several properties : compactly supported, symmet
 The authors divide the construction of the matrix by diagonals.
 
 
+The author also develop the a.c. wavelet in the 2-dimensional case. The 2-dimensional wavelet can be separated to form a block matrix.
+
+They recall the fact that this correction matrix is needed for an unbiaised estimation of the spectrum !!!
