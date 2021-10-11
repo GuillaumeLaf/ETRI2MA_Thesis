@@ -1,0 +1,78 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{geometry}
+\usepackage{amsfonts}
+
+\geometry{a4paper, portrait, margin=1cm}
+
+\newcommand{\mb}[1]{\boldsymbol{#1}}
+
+\let \oldsum \sum
+\renewcommand{\sum}{\displaystyle \oldsum}
+
+\newcommand{\abs}[1]{\left \lvert #1 \right \rvert}
+
+\newcommand{\X}[1]{\bm{X_{#1;T}}}
+\newcommand{\eX}[2]{X_{#2;T}^{(#1)}}
+\newcommand{\W}[2]{\bm{W_{#1}\left(#2/T\right)}}
+\newcommand{\eW}[4]{W_{#3}^{(#1,#2)}\left(#4/T\right)}
+\newcommand{\CEWS}[2]{\bm{S_{#1}\left(#2/T\right)}}
+\newcommand{\eCEWS}[4]{S_{#3}^{(#1,#2)}\left(#4/T\right)}
+\newcommand{\wavelet}[3]{\psi_{#1,#2}(#3)}
+\newcommand{\ACwavelet}[2]{\bm{\Psi}_{#1}(#2)}
+\newcommand{\increment}[2]{\bm{\xi_{#1,#2}}}
+\newcommand{\eincrement}[3]{\xi_{#2,#3}^{(#1)}}
+\newcommand{\scalesum}{\sum_{j=-J}^{-1}}
+\newcommand{\locsum}{\sum_{k=0}^{T}}
+\newcommand{\kronecker}[2]{\delta_{#1,#2}}
+
+\begin{document}
+	\section{Quantities}
+		\begin{itemize}
+			\item $J \in \mathbb{Z}^{+}$ = number of scale decomposition
+			\item $T = 2^{J}$ = number of time periods 
+			\item $N \in \mathbb{Z}^{+}$ = number of cross-section elements
+		\end{itemize}
+
+	\section{Multivariate Locally Stationary Wavelet process (Park et al. (2014))}
+		The vector $(N \times 1)$ of stochastic processes $\X{t}$ follows the given decomposition : 
+		$ \X{t} = \scalesum \locsum \W{j}{k} \increment{j}{k} \wavelet{j}{k}{t} $ 
+		where 
+		\begin{itemize}
+			\item $\bm{W_{j}(z)}$ is a $(N \times N)$ matrix. \\ 
+				For each $(m,n)$-element, 
+				\begin{itemize}
+					\item $W_{j}^{(m,n)}(z)$ is a Lipschitz continuous function on $z \in (0,1)$.
+					\item $\sum_{j=-\infty}^{-1} \abs{W_{j}^{(m,n)}(z)}^{2} < \infty$ (finite energy).
+					\item $\sum_{j=-\infty}^{-1} 2^{-j}L_{j} < \infty$ (uniformly bounded Lipschitz constants $L_{j}$).
+				\end{itemize}
+			\item $\increment{j}{k}$ is the vector $(N \times 1)$ of random orthonormal increments.
+				\begin{itemize}
+					\item $Cov(\eincrement{u}{j}{k}, \eincrement{u'}{j'}{k'}) = \kronecker{j}{j'}\kronecker{k}{k'}\kronecker{u}{u'}$ ($\kronecker{j}{j'}$ is the Kronecker delta).
+				\end{itemize}
+			\item $\wavelet{j}{k}{t}$ is a scalar representing a non-decimated wavelet.
+		\end{itemize}
+
+We can define the \emph{cross-Evoluationary Wavelet Spectrum} $(N \times N)$ matrix : $\bm{S_{j}(z)} = \bm{W_{j}(z)}\bm{W_{j}(z)}'$.
+This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u')}(z,\tau) = \sum_{j=-\infty}^{-1} S_{j}^{(u,u')}(z) \ACwavelet{j}{\tau}$ where $\ACwavelet{j}{\tau} = $, the \emph{autocorrelation wavelet}.
+
+	\section{Notes}
+		\begin{itemize}
+			\item  $\bm{W_{j}(z)}$ is assumed to have a lower-triangular form in Park et al. (2014) to ease interpretation. However proofs don't depend on this form. Here full matrix. 
+			\item The dependence structure is entirely in $\bm{W_{j}(z)}$, not in $\increment{j}{k}$.
+		\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+	
+\end{document}
