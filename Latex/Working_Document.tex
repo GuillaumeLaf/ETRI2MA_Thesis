@@ -1,11 +1,15 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{bm}
 \usepackage{geometry}
 \usepackage{amsfonts}
+\usepackage{xcolor}
 
 \geometry{a4paper, portrait, margin=1cm}
+
+\numberwithin{equation}{section}
 
 \newcommand{\mb}[1]{\boldsymbol{#1}}
 
@@ -16,53 +20,184 @@
 
 \newcommand{\X}[1]{\bm{X_{#1;T}}}
 \newcommand{\eX}[2]{X_{#2;T}^{(#1)}}
-\newcommand{\W}[2]{\bm{W_{#1}\left(#2/T\right)}}
+\newcommand{\W}[2]{\bm{W}_{#1}\left(#2/T\right)}
 \newcommand{\eW}[4]{W_{#3}^{(#1,#2)}\left(#4/T\right)}
-\newcommand{\CEWS}[2]{\bm{S_{#1}\left(#2/T\right)}}
+\newcommand{\CEWS}[2]{\bm{S}_{#1}\left(#2/T\right)}
 \newcommand{\eCEWS}[4]{S_{#3}^{(#1,#2)}\left(#4/T\right)}
 \newcommand{\wavelet}[3]{\psi_{#1,#2}(#3)}
 \newcommand{\ACwavelet}[2]{\bm{\Psi}_{#1}(#2)}
-\newcommand{\increment}[2]{\bm{\xi_{#1,#2}}}
+\newcommand{\increment}[2]{\bm{\xi}_{#1,#2}}
 \newcommand{\eincrement}[3]{\xi_{#2,#3}^{(#1)}}
+
 \newcommand{\scalesum}{\sum_{j=-J}^{-1}}
+\newcommand{\scalesumi}{\sum_{l=-J}^{-1}}
 \newcommand{\locsum}{\sum_{k=0}^{T}}
+\newcommand{\locsumi}{\sum_{m=0}^{T}}
+
 \newcommand{\kronecker}[2]{\delta_{#1,#2}}
 
+\newcommand{\coeffs}[2]{\bm{d}_{#1,#2}}
+\newcommand{\rawPeriodo}[2]{\bm{I}_{#1,#2}}
+\newcommand{\correctedPeriodo}[2]{\bar{\bm{I}}_{#1,#2}}
+\newcommand{\smoothPeriodo}[2]{\widetilde{\bm{I}}_{#1,#2}}
+
+\newcommand{\estimCEWS}[2]{\widehat{\bm{S}}_{#1}\left(#2/T\right)}
+
+\newcommand{\E}[1]{\mathrm{E}\left[#1\right]}
+\newcommand{\Var}[1]{\mathrm{Var}\left[#1\right]}
+\newcommand{\Cov}[2]{\mathrm{Cov}\left[#1,#2\right]}
+
+\newcommand{\loadings}[2]{\bm{\Lambda}_{#1,#2}}
+\newcommand{\optLoadings}[2]{\bar{\bm{\Lambda}}_{#1,#2}}
+\newcommand{\factors}[1]{\bm{F}_{#1}}
+\newcommand{\optFactors}[1]{\bar{\bm{F}}_{#1}}
+\newcommand{\idioError}[2]{\bm{\epsilon}_{#1,#2}}
+
 \begin{document}
-	\section{Quantities}
-		\begin{itemize}
-			\item $J \in \mathbb{Z}^{+}$ = number of scale decomposition
-			\item $T = 2^{J}$ = number of time periods 
-			\item $N \in \mathbb{Z}^{+}$ = number of cross-section elements
-		\end{itemize}
+\section{Quantities}
+	\begin{itemize}
+		\item $J \in \mathbb{Z}^{+}$ = number of scales decomposition
+		\item $T = 2^{J}$ = number of time periods 
+		\item $N \in \mathbb{Z}^{+}$ = number of cross-section elements
+		\item $K (\leq N)$ = number of common factors
+	\end{itemize}
 
-	\section{Multivariate Locally Stationary Wavelet process (Park et al. (2014))}
-		The vector $(N \times 1)$ of stochastic processes $\X{t}$ follows the given decomposition : 
-		$ \X{t} = \scalesum \locsum \W{j}{k} \increment{j}{k} \wavelet{j}{k}{t} $ 
-		where 
-		\begin{itemize}
-			\item $\bm{W_{j}(z)}$ is a $(N \times N)$ matrix. \\ 
-				For each $(m,n)$-element, 
-				\begin{itemize}
-					\item $W_{j}^{(m,n)}(z)$ is a Lipschitz continuous function on $z \in (0,1)$.
-					\item $\sum_{j=-\infty}^{-1} \abs{W_{j}^{(m,n)}(z)}^{2} < \infty$ (finite energy).
-					\item $\sum_{j=-\infty}^{-1} 2^{-j}L_{j} < \infty$ (uniformly bounded Lipschitz constants $L_{j}$).
-				\end{itemize}
-			\item $\increment{j}{k}$ is the vector $(N \times 1)$ of random orthonormal increments.
-				\begin{itemize}
-					\item $Cov(\eincrement{u}{j}{k}, \eincrement{u'}{j'}{k'}) = \kronecker{j}{j'}\kronecker{k}{k'}\kronecker{u}{u'}$ ($\kronecker{j}{j'}$ is the Kronecker delta).
-				\end{itemize}
-			\item $\wavelet{j}{k}{t}$ is a scalar representing a non-decimated wavelet.
-		\end{itemize}
+\section{Multivariate Locally Stationary Wavelet process (Park et al. (2014))}
+	The vector $(N \times 1)$ of stochastic processes $\X{t}$ follows the given decomposition : 
+	\begin{align}\label{eq:lswStructure}
+		 \X{t} = \scalesum \locsum \W{j}{k} \increment{j}{k} \wavelet{j}{k}{t} 
+	\end{align}
+	where 
+	\begin{itemize}
+		\item $\bm{W_{j}(z)}$ is a lower-triangular $(N \times N)$ matrix. \\ 
+			For each $(m,n)$-element, 
+			\begin{align}
+				 &W_{j}^{(m,n)}(z) \text{ is a Lipschitz continuous function on } z \in (0,1) \\
+				 &\sum_{j=-\infty}^{-1} \abs{W_{j}^{(m,n)}(z)}^{2} < \infty, \qquad \forall z \in (0,1) \hspace{1cm} \text{(finite energy)}\\
+				 &\sum_{j=-\infty}^{-1} 2^{-j}L_{j}^{(m,n)} < \infty  \hspace{2cm} \text{(uniformly bounded Lipschitz constants $L_{j}$)}
+			\end{align}
+		\item $\increment{j}{k}$ is the vector $(N \times 1)$ of random orthonormal increments.
+			\begin{align}
+				\E{\eincrement{u}{j}{k}} &= 0, \qquad &\forall j,k,u \\ \label{eq:indepIncrements}
+				\Cov{\eincrement{u}{j}{k}}{\eincrement{u'}{j'}{k'}} &= \kronecker{j}{j'}\kronecker{k}{k'}\kronecker{u}{u'}, \qquad &\forall j,j',k,k',u,u' 
+			\end{align}
 
-We can define the \emph{cross-Evoluationary Wavelet Spectrum} $(N \times N)$ matrix : $\bm{S_{j}(z)} = \bm{W_{j}(z)}\bm{W_{j}(z)}'$.
-This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u')}(z,\tau) = \sum_{j=-\infty}^{-1} S_{j}^{(u,u')}(z) \ACwavelet{j}{\tau}$ where $\ACwavelet{j}{\tau} = $, the \emph{autocorrelation wavelet}.
+		\item $\wavelet{j}{k}{t} = \psi_{j,k-t}$ is a scalar representing a non-decimated wavelet.
+	\end{itemize}
 
-	\section{Notes}
+We can define the \emph{Cross-Evoluationary Wavelet Spectrum} $(N \times N)$ matrix : $\bm{S}_{j}(z) = \bm{W}_{j}(z)\bm{W}_{j}(z)'$.
+This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u')}(z,\tau) = \sum_{j=-\infty}^{-1} S_{j}^{(u,u')}(z) \ACwavelet{j}{\tau}$ where $\ACwavelet{j}{\tau} = \sum_{k} \wavelet{j}{k}{0}\wavelet{j}{k}{\tau}$, the \emph{autocorrelation wavelet}. The latter also define the \emph{inner product matrix of discrete autocorrelation wavelets} : $A_{jl} = \sum_{\tau}\ACwavelet{j}{\tau}\ACwavelet{l}{\tau}$, $A = \left\{ A_{jl}\right\}_{j,l \in \mathbb{N}}$ and its inverse : $\bar{A} = A^{-1}$.
+
+\subsection{Estimation of MvLSW}
+\begin{itemize}
+	\item $\coeffs{j}{k} = \sum_{t=0}^{T-1}\bm{X}_t \wavelet{j}{k}{t}$  \hspace{2cm} (empirical wavelet coefficients)
+	\item $\rawPeriodo{j}{k} = \coeffs{j}{k}\coeffs{j}{k}'$  \hspace{2cm} (raw wavelet periodogram)
 		\begin{itemize}
-			\item  $\bm{W_{j}(z)}$ is assumed to have a lower-triangular form in Park et al. (2014) to ease interpretation. However proofs don't depend on this form. Here full matrix. 
-			\item The dependence structure is entirely in $\bm{W_{j}(z)}$, not in $\increment{j}{k}$.
+			\item $\E{\rawPeriodo{j}{k}} = \sum_{l=-J}^{-1} A_{jl}\CEWS{l}{k} + O(T^{-1})$ \hspace{2cm} (biaised estimator)
 		\end{itemize}
+	\item $\correctedPeriodo{j}{k} = \sum_{l=-J}^{-1} \bar{A}_{j,l}\rawPeriodo{l}{k}$ \hspace{2cm} (corrected periodogram) $\Longrightarrow$ (unbiased estimator)
+	\item $\smoothPeriodo{j}{k} = \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M}\rawPeriodo{j}{k+m} $ \hspace{2cm} (smooth periodogram) $\Longrightarrow$ (consistent estimator)
+	\item $\estimCEWS{j}{k} = \sum_{l=-J}^{-1}\bar{A}_{jl}\smoothPeriodo{l}{k} = \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M}\correctedPeriodo{j}{k+m} = \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M}\sum_{l=-J}^{-1} \bar{A}_{j,l}\rawPeriodo{l}{k+m}$ \hspace{1cm} (final estimator of CEWS)
+\end{itemize}
+
+\subsection{Notes}
+	\begin{itemize}
+		\item The dependence structure is entirely in $\bm{W}_{j}(z)$, not in $\increment{j}{k}$.
+		\item The lower-triangular form of $\bm{W}_{j}(z)$ allows us to use the Cholesky decomposition on $\bm{S}_{j}(z)$.
+	\end{itemize}
+
+\section{Factor Model}
+	\begin{itemize}
+		\item The factor structure is imposed on the following : 
+			\begin{align} \label{eq:factorStructure}
+				\W{j}{k} \increment{j}{k} = \loadings{j}{k} \factors{k} + \idioError{j}{k}
+			\end{align}
+			, not only on $\increment{j}{k}$ since they are assumed orthonormal.
+		\item Assumptions : 	
+			\begin{enumerate}
+				\item $\factors{k} \sim (\bm{0}, \bm{\Sigma}_F)$, where $\bm{\Sigma}_F$ is a diagonal positive definite $(K \times K)$ matrix. 
+				\item $\factors{k} \perp \idioError{j}{k'}$, $\forall j,k,k'$
+				\item $\idioError{j}{k} \sim (\bm{0}, \bm{\Sigma}_{\epsilon})$, where $\bm{\Sigma}_{\epsilon}$ has bounded eigenvalues. \textcolor{blue}{Note : make $\bm{\Sigma}_{\epsilon}$ dependent on time ? what about serial dependence ?}
+			\end{enumerate}
+		\item We can then represent the CEWS with the factor structure : 
+		\begin{align*}
+			\Var{\W{j}{k}\increment{j}{k}}        	    &= \Var{\loadings{j}{k}\factors{k}} + \Var{\idioError{j}{k}} \\
+			\W{j}{k} \Var{\increment{j}{k}} \W{j}{k}' &= \loadings{j}{k}\Var{\factors{k}}\loadings{j}{k}' +  \Var{\idioError{j}{k}}\\
+			\W{j}{k}\W{j}{k}' &=  \loadings{j}{k}\bm{\Sigma}_{F}\loadings{j}{k}' +  \bm{\Sigma}_{\epsilon} &\text{ from } \eqref{eq:indepIncrements}\\
+			\CEWS{j}{k} &= \loadings{j}{k}\bm{\Sigma}_{F}\loadings{j}{k}' +  \bm{\Sigma}_{\epsilon}
+		\end{align*}
+	\end{itemize}
+
+An important quantity to analyse is : 
+	\begin{align*}
+		\W{j}{k}\increment{j}{k}\increment{j'}{k'}'\W{j'}{k'}' = \loadings{j}{k}\factors{k}\factors{k'}'\loadings{j'}{k'}' + \idioError{j}{k}\factors{k'}'\loadings{j'}{k'}' + \loadings{j}{k}\factors{k}\idioError{j'}{k'}' + \idioError{j}{k}\idioError{j'}{k'}'
+	\end{align*}
+
+\subsection{Estimation}
+	The estimation of the loadings and common factors is carried out by a non-linear least square procedure in the wavelet domain.
+	\begin{align}
+		\min_{\optLoadings{j}{k},\optFactors{k}} \quad & (NT)^{-1} \sum_t \left[\X{t} - \scalesum \locsum \left(\optLoadings{j}{k} \optFactors{k}\right) \wavelet{j}{k}{t}\right]'\left[\X{t} - \scalesum \locsum \left(\optLoadings{j}{k} \optFactors{k}\right) \wavelet{j}{k}{t}\right]\nonumber \\ 
+	\textrm{s.t.} \quad & \frac{\optLoadings{j}{k}'\optLoadings{j}{k}}{N} = \bm{I}_K \label{eq:constraint}
+	\end{align}
+	After distributing the objective function becomes, 
+\small
+	\begin{align*}
+ (NT)^{-1} \sum_t \Big[\X{t}'\X{t} - \X{t}' \scalesum \locsum \optLoadings{j}{k}\optFactors{k}\wavelet{j}{k}{t}
+	-\scalesum \locsum \wavelet{j}{k}{t}\optFactors{k}'\optLoadings{j}{k}' \X{t} 
+        + \scalesum \locsum \scalesumi \locsumi \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]\
+	\end{align*}
+\normalsize
+\footnotesize
+	\begin{align*}
+	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum \locsum \textcolor{blue}{\sum_t  \X{t}'\wavelet{j}{k}{t}} \optLoadings{j}{k}\optFactors{k}
+		-\scalesum \locsum \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\sum_t  \X{t} \wavelet{j}{k}{t}}
+	        + \sum_t \scalesum \locsum \scalesumi \locsumi \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
+	\end{align*}
+\normalsize
+	By definition of the empirical wavelet coefficents,
+\small
+	\begin{align*}
+	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum \locsum \textcolor{blue}{\coeffs{j}{k}'} \optLoadings{j}{k}\optFactors{k}
+		-\scalesum \locsum \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\coeffs{j}{k}} 
+	       + \sum_t \scalesum \locsum \scalesumi \locsumi \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
+	\end{align*}
+\normalsize     			      
+
+	The First Order Condition with respect to $\optFactors{k}$ are :
+	\begin{align*}
+		\optFactors{k}' \scalesum \optLoadings{j}{k}' \optLoadings{j}{k} = \scalesum \coeffs{j}{k}' \optLoadings{j}{k} \quad, \forall k
+	\end{align*}
+	With the constraint \eqref{eq:constraint} and taking the transpose, 
+	\begin{align}\label{eq:optFactor}
+		\optFactors{k} = (JN)^{-1} \scalesum \optLoadings{j}{k}' \coeffs{j}{k}
+	\end{align}
+
+	Replace \eqref{eq:optFactor} in the original minimization problem, 
+	\begin{align*}
+		\min_{\optLoadings{j}{k}} \quad (NT)^{-1}
+	\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
