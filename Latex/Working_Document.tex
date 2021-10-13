@@ -6,6 +6,7 @@
 \usepackage{geometry}
 \usepackage{amsfonts}
 \usepackage{xcolor}
+\usepackage{cancel} % strikethrough text
 
 \geometry{a4paper, portrait, margin=1cm}
 
@@ -128,10 +129,64 @@ This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u'
 		\end{align*}
 	\end{itemize}
 
-An important quantity to analyse is : 
+	An important quantity to analyse is : 
 	\begin{align*}
 		\W{j}{k}\increment{j}{k}\increment{j'}{k'}'\W{j'}{k'}' = \loadings{j}{k}\factors{k}\factors{k'}'\loadings{j'}{k'}' + \idioError{j}{k}\factors{k'}'\loadings{j'}{k'}' + \loadings{j}{k}\factors{k}\idioError{j'}{k'}' + \idioError{j}{k}\idioError{j'}{k'}'
 	\end{align*}
+	Each $(m,n)$-element of the matrix on the RHS can be written as : 
+	\begin{align*}
+		\sum_{u}\sum_{u'} \eW{m}{u}{j}{k}\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}\eW{u'}{n}{j'}{k'} \left(= \sum_{u}\ \eW{m}{u}{j}{k}\eincrement{u}{j}{k} \sum_{u'}\eW{u'}{n}{j'}{k'} \eincrement{u'}{j'}{k'}\right)
+	\end{align*}
+	\footnote{Can analyse this term as $\sum_u  \eW{m}{u}{j}{k}\eincrement{u}{j}{k} \sum_{u'} \eW{u'}{n}{j'}{k'}\eincrement{u'}{j'}{k'}$ and then use Slutsky ?}.
+
+	The expectation of each term is therefore, 
+	\begin{align*}
+		\E{\eW{m}{u}{j}{k}\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}\eW{u'}{n}{j'}{k'}} &= \eW{m}{u}{j}{k}\E{\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}}\eW{u'}{n}{j'}{k'}\\
+		&= \begin{cases}
+			\eW{m}{u}{j}{k}\eW{u}{n}{j}{k} \quad &\text{ if } j=j',k=k',u=u'\\
+			0  \quad & \text{otherwise}
+		      \end{cases} \quad \text{form } \eqref{eq:indepIncrements}
+	\end{align*}
+	To apply a WLLN we need finite variances on each term :  
+	\begin{align*}
+		&\Var{\eW{m}{u}{j}{k}\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}\eW{u'}{n}{j'}{k'}} = \left(\eW{m}{u}{j}{k}\right)^{2}\Var{\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}}\left(\eW{u'}{n}{j'}{k'}\right)^{2}\\
+		&\Var{\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}} = 
+			\begin{cases}
+				\E{\left(\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}\right)^{2}} = \footnotesize \begin{cases}
+															\E{(\eincrement{u}{j}{k})^{2}}\E{(\eincrement{u'}{j'}{k'})^{2}} = 1 &\text{ if } \eincrement{u}{j}{k} \text{ is Gaussian and from}\eqref{eq:indepIncrements}\\ 			
+															\leq \E{(\eincrement{u}{j}{k})^{4}}^{1/2}\E{(\eincrement{u'}{j'}{k'})^{4}}^{1/2}	&\text{ otherwise and from Cauchy. }			
+														\end{cases} &\text{ if } j\neq j', k\neq k', u\neq u' \normalsize\\
+				\Var{(\eincrement{u}{j}{k})^{2}} \leq \E{(\eincrement{u}{j}{k})^{4}} & \text{ otherwise }
+			\end{cases}
+	\end{align*}
+	which suggests that we need finite fourth moment for the increment of the LSW process in order to have convergence in probability. \\
+	If $\E{(\eincrement{u}{j}{k})^{4}}< \infty$, \textcolor{blue}{convergence ? But double sum...}.\\
+	
+	\textcolor{blue}{
+	Each $(m,n)$-element of the matrix on the RHS can be written as : 
+	\begin{align*}
+		\sum_{u}\sum_{u'} \eW{m}{u}{j}{k}\eincrement{u}{j}{k}\eincrement{u'}{j'}{k'}\eW{u'}{n}{j'}{k'} = \sum_{u}\ \eW{m}{u}{j}{k}\eincrement{u}{j}{k} \sum_{u'}\eW{u'}{n}{j'}{k'} \eincrement{u'}{j'}{k'}
+	\end{align*}
+	We can analyse the convergence of the two sum independently and then apply Slutsky. 
+	The expectation of each term in the first sum is therefore, 
+	\begin{align*}
+		\E{\eW{m}{u}{j}{k}\eincrement{u}{j}{k}} &= \eW{m}{u}{j}{k}\E{\eincrement{u}{j}{k}} = 0\\
+	\end{align*}
+	To apply a WLLN we need finite variances on each term :  
+	\begin{align*}
+		\Var{\eW{m}{u}{j}{k}\eincrement{u}{j}{k}} &= \left(\eW{m}{u}{j}{k}\right)^{2}\Var{\eincrement{u}{j}{k}}\\
+								        &= \left(\eW{m}{u}{j}{k}\right)^{2} < \infty \quad &\text{from }\eqref{eq:indepIncrements} \text{ and }\eqref{eq:finiteEnergy}
+	\end{align*}
+	Then, 
+	\begin{align*}
+		\frac{1}{N} \sum_{u=1}^{N} \eW{m}{u}{j}{k}\eincrement{u}{j}{k} \overset{p}{\longrightarrow} 0 \quad \text{when } N \longrightarrow \infty
+	\end{align*}
+	Finally by Slutsky, 
+	\begin{align*}
+		\frac{1}{N}\sum_{u}\ \eW{m}{u}{j}{k}\eincrement{u}{j}{k} \frac{1}{N}\sum_{u'}\eW{u'}{n}{j'}{k'} \eincrement{u'}{j'}{k'} \overset{p}{\longrightarrow} 0
+	\end{align*}
+	\textcolor{blue}{There is a problem... This result would mean that the factor structure is imposed on a null matrix asymptotically. }}
+
 
 \subsection{Estimation}
 	The estimation of the loadings and common factors is carried out by a non-linear least square procedure in the wavelet domain.
@@ -159,23 +214,31 @@ An important quantity to analyse is :
 	\begin{align*}
 	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum \locsum \textcolor{blue}{\coeffs{j}{k}'} \optLoadings{j}{k}\optFactors{k}
 		-\scalesum \locsum \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\coeffs{j}{k}} 
-	       + \sum_t \scalesum \locsum \scalesumi \locsumi \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
+	       + \textcolor{red}{\sum_t} \scalesum \locsum \scalesumi \locsumi \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
 	\end{align*}
 \normalsize     			      
 
-	The First Order Condition with respect to $\optFactors{k}$ are :
+	The First Order Condition with respect to $\optFactors{k}$ are : \textcolor{blue}{not correct}
 	\begin{align*}
-		\optFactors{k}' \scalesum \optLoadings{j}{k}' \optLoadings{j}{k} = \scalesum \coeffs{j}{k}' \optLoadings{j}{k} \quad, \forall k
+		\optFactors{k}' \scalesum \scalesumi \sum_{m} \optLoadings{j}{k}' \optLoadings{l}{m} \factors{m} \textcolor{red}{\sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t}} = \scalesum \coeffs{j}{k}' \optLoadings{j}{k} \quad, \forall k
 	\end{align*}
-	With the constraint \eqref{eq:constraint} and taking the transpose, 
+	\textcolor{red}{The problem is that we cannot inverse $\sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t}$ since it could be null and that we define the common factor in term of itself. Solution : show that $\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m}$ is (asymptotically) zero when indices differ.}
+	With the constraint \eqref{eq:constraint} and taking the transpose,
+ 
 	\begin{align}\label{eq:optFactor}
-		\optFactors{k} = (JN)^{-1} \scalesum \optLoadings{j}{k}' \coeffs{j}{k}
+		\cancel{\optFactors{k} \scalesum \scalesumi \sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t} = (N)^{-1} \scalesum \optLoadings{j}{k}' \coeffs{j}{k} \quad, \forall k}
 	\end{align}
 
 	Replace \eqref{eq:optFactor} in the original minimization problem, 
 	\begin{align*}
 		\min_{\optLoadings{j}{k}} \quad (NT)^{-1}
 	\end{align*}
+
+\section{Goals}
+\begin{itemize}
+	\item $\lVert \hat{\bm{\Lambda}}_{j,k} - \bm{\Lambda}_{j,k}\bm{R}_{j,k} \rVert = O(1)$
+	\item $\lVert \hat{\bm{F}}_{k} - \bm{R}^{-1}_{\textcolor{red}{j},k}\bm{F}_{k} \rVert = O(1)$
+\end{itemize}
 
 
 
