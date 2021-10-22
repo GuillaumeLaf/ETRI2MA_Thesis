@@ -1,0 +1,28 @@
+\documentclass[main_document.tex]{subfiles}
+
+\begin{document}
+	\section{CEWS Estimator under the factor model}
+	In this section we will develop the \emph{Cross-Evolutionary Wavelet Estimator} by using the factor structure and we will prove the convergence of this estimator under the structure.
+	Recall the consistent and unbiaised estimator of the CEWS : 
+	\begin{align*}
+		\estimCEWS{j}{k} = \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M}\sum_{l=-J}^{-1} \bar{A}_{j,l}\coeffs{l}{k+m}\coeffs{l}{k+m}'
+	\end{align*}
+	by multiplying both sides by $N^{-1}$ and by using \eqref{eq:lswStructure}, \eqref{eq:empiricalWaveletCoeffs} and \eqref{eq:factorStructure} we successively obtain : 
+	\begin{align*}
+		N^{-1} \estimCEWS{j}{k} &= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \sum_{t=0}^{T} \X{t}\wavelet{j}{k+s}{t} \sum_{t'=0}^{T} \X{t'}'\wavelet{j}{k+s}{t'} &\quad \text{ by } \eqref{eq:empiricalWaveletCoeffs} \\
+						&= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} \locsum{m} \scalesum{p} \W{p}{m} \increment{p}{m} \wavelet{p}{m}{t} \\
+	 & \hspace{5cm} \locsum{m'} \scalesum{p'} \increment{p'}{m'}' \W{p'}{m'}' \wavelet{p'}{m'}{t'} \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'} &\quad \text{ by } \eqref{eq:lswStructure} \\
+						&= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} \locsum{m} \scalesum{p} (\loadings{p}{m}\factors{m} + \idioError{p}{m}) \wavelet{p}{m}{t} \\
+	 & \hspace{5cm} \locsum{m'} \scalesum{p'} (\loadings{p}{m}\factors{m} + \idioError{p}{m})' \wavelet{p'}{m'}{t'} \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'} &\quad \text{ by } \eqref{eq:factorStructure}
+	\end{align*}
+In order to ease readibility, let's define two objects : 
+	\begin{align}
+		C_t &= \locsum{m}\scalesum{p} \loadings{p}{m}\factors{m}\wavelet{p}{m}{t} \label{eq:C}\\
+		E_t &= \locsum{m} \scalesum{p} \idioError{p}{m}\wavelet{p}{m}{t} \label{eq:E}
+	\end{align}
+Consequently, 
+	\begin{align*}
+		N^{-1} \estimCEWS{j}{k} &= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} [C_t + E_t][C_t + E_t]' \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'} \\
+							   &= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} [C_t C_{t'} + C_t E_{t'}' + E_t C_{t'}' + E_t E_{t'}'] \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'}
+	\end{align*}
+\end{document}

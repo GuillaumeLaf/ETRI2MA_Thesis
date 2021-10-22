@@ -1,0 +1,144 @@
+\documentclass[main_document.tex]{subfiles}
+
+\begin{document}
+\subsection{Estimation}
+	The estimation of the loadings and common factors is carried out by a non-linear least square procedure in the wavelet domain.
+	\begin{align}
+		\min_{\setOptLoadings,\setOptFactors} \quad & (NT)^{-1} \sum_t \left[\X{t} - \scalesum{j} \locsum{k} \left(\optLoadings{j}{k} \optFactors{k}\right) \wavelet{j}{k}{t}\right]'\left[\X{t} - \scalesum{j} \locsum{k} \left(\optLoadings{j}{k} \optFactors{k}\right) \wavelet{j}{k}{t}\right]\nonumber \\ 
+	\textrm{s.t.} \quad & \frac{\optLoadings{j}{k}'\optLoadings{j}{k}}{N} = \bm{I}_K \label{eq:constraint}
+	\end{align}
+	After distributing the objective function becomes, 
+\small
+	\begin{align*}
+ (NT)^{-1} \sum_t \Big[\X{t}'\X{t} - \X{t}' \scalesum{j} \locsum{k} \optLoadings{j}{k}\optFactors{k}\wavelet{j}{k}{t}
+	-\scalesum{j} \locsum{k} \wavelet{j}{k}{t}\optFactors{k}'\optLoadings{j}{k}' \X{t} 
+        + \scalesum{j} \locsum{k} \scalesum{l} \locsum{m} \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]\
+	\end{align*}
+\normalsize
+\footnotesize
+	\begin{align*}
+	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum{j} \locsum{k} \textcolor{blue}{\sum_t  \X{t}'\wavelet{j}{k}{t}} \optLoadings{j}{k}\optFactors{k}
+		-\scalesum{j} \locsum{k} \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\sum_t  \X{t} \wavelet{j}{k}{t}}
+	        + \sum_t \scalesum{j} \locsum{k} \scalesum{l} \locsum{m} \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
+	\end{align*}
+\normalsize
+	By definition of the empirical wavelet coefficents,
+\small
+	\begin{align*}
+	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum{j} \locsum{k} \textcolor{blue}{\coeffs{j}{k}'} \optLoadings{j}{k}\optFactors{k}
+		-\scalesum{j} \locsum{k} \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\coeffs{j}{k}} 
+	       + \sum_t \scalesum{j} \locsum{k} \scalesum{l} \locsum{m} \wavelet{j}{k}{t}\wavelet{l}{m}{t}\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m} \Big]
+	\end{align*}
+\normalsize     			      
+
+	By assumption on the loadings \textcolor{orange}{(possible improvement)} and the fact that wavelets are normalized $ \sum_{t}(\wavelet{j}{k}{t})^{2} = 1, \forall j,k$, 
+\small
+	\begin{align*}
+	 (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} - \scalesum{j} \locsum{k} \textcolor{blue}{\coeffs{j}{k}'} \optLoadings{j}{k}\optFactors{k}
+		-\scalesum{j} \locsum{k} \optFactors{k}'\optLoadings{j}{k}' \textcolor{blue}{\coeffs{j}{k}} 
+	       +  \scalesum{j} \locsum{k} \optFactors{k}'\optLoadings{j}{k}'\optLoadings{j}{k}\optFactors{k} \Big]
+	\end{align*}
+\normalsize    
+
+The First Order Conditions with respect to the factors are given by : 
+	\begin{align}
+		\optFactors{k}' \scalesum{j} \optLoadings{j}{k}'\optLoadings{j}{k} - \scalesum{j} \coeffs{j}{k}' \optLoadings{j}{k} &= 0 \quad, \forall k \nonumber\\
+		\optFactors{k}' \scalesum{j} N &= \scalesum{j} \coeffs{j}{k}' \optLoadings{j}{k} \quad, \forall k &\text{ from } \eqref{eq:constraint} \nonumber \\
+		\optFactors{k}'  &= (JN)^{-1}\scalesum{j} \coeffs{j}{k}' \optLoadings{j}{k} \label{eq:optimalFactors}
+	\end{align}
+
+%	The First Order Condition with respect to $\optFactors{k}$ are : \textcolor{blue}{not correct}
+%	\begin{align*}
+%		\optFactors{k}' \scalesum{j} \scalesum{j}i \sum_{m} \optLoadings{j}{k}' \optLoadings{l}{m} \factors{m} \textcolor{red}{\sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t}} = \scalesum{j} \coeffs{j}{k}' \optLoadings{j}{k} \quad, \forall k
+%	\end{align*}
+%	\textcolor{red}{The problem is that we cannot inverse $\sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t}$ since it could be null and that we define the common factor in term of itself. Solution : show that $\optFactors{k}'\optLoadings{j}{k}'\optLoadings{l}{m}\optFactors{m}$ is (asymptotically) zero when indices differ.}
+%	With the constraint \eqref{eq:constraint} and taking the transpose,
+ 
+%	\begin{align}\label{eq:optFactor}
+%		\cancel{\optFactors{k} \scalesum{j} \scalesum{j}i \sum_t \wavelet{j}{k}{t}\wavelet{l}{m}{t} = (N)^{-1} \scalesum{j} \optLoadings{j}{k}' \coeffs{j}{k} \quad, \forall k}
+%	\end{align}
+
+	Replace \eqref{eq:optimalFactors} in the original minimization problem, 
+	\begin{align*}
+		\min_{\setOptLoadings} \quad (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} &- \scalesum{j} \locsum{k}\coeffs{j}{k}' \optLoadings{j}{k}\left((JN)^{-1}\scalesum{l}  \optLoadings{l}{k}' \coeffs{l}{k}\right) \\
+		&- \scalesum{j} \locsum{k} \left((JN)^{-1}\scalesum{l}  \coeffs{l}{k}' \optLoadings{l}{k} \right)\optLoadings{j}{k}' \coeffs{j}{k} \\
+	       &+ \scalesum{j} \locsum{k} \left((JN)^{-1}\scalesum{l}  \coeffs{l}{k}' \optLoadings{l}{k} \right)\optLoadings{j}{k}'\optLoadings{j}{k}\left((JN)^{-1}\sum_{n=-J}^{-1}  \optLoadings{n}{k}' \coeffs{n}{k}\right) \Big]
+	\end{align*}
+
+	\begin{align*}
+		\min_{\setOptLoadings} \quad (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} &- (JN)^{-1}\scalesum{l} \scalesum{j} \locsum{k} \coeffs{j}{k}' \optLoadings{j}{k}\optLoadings{l}{k}' \coeffs{l}{k} \\
+		&- (JN)^{-1}\scalesum{l} \scalesum{j} \locsum{k} \coeffs{l}{k}' \optLoadings{l}{k} \optLoadings{j}{k}' \coeffs{j}{k} \\
+	       &+ (JN)^{-2}\scalesum{l} \sum_{n=-J}^{-1} \textcolor{blue}{\scalesum{j}} \locsum{k} \coeffs{l}{k}' \optLoadings{l}{k} \textcolor{blue}{\optLoadings{j}{k}' \optLoadings{j}{k}} \optLoadings{n}{k}' \coeffs{n}{k} \Big]
+	\end{align*}
+
+	\begin{align*}
+		\min_{\setOptLoadings} \quad (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} &- (JN)^{-1}\scalesum{j}i \scalesum{j} \locsum{k} \coeffs{j}{k}' \optLoadings{j}{k}\optLoadings{l}{k}' \coeffs{l}{k} \\
+		&- (JN)^{-1}\scalesum{l} \scalesum{j} \locsum{k} \coeffs{l}{k}' \optLoadings{l}{k} \optLoadings{j}{k}' \coeffs{j}{k} \\
+	       &+ (JN)^{-2} \textcolor{blue}{JN}\scalesum{l} \sum_{n=-J}^{-1} \scalesum{j} \locsum{k} \coeffs{l}{k}' \optLoadings{l}{k} \optLoadings{n}{k}' \coeffs{n}{k} \Big] 			&\quad \text{from } \eqref{eq:constraint}
+	\end{align*}
+
+\begin{align*}
+	\min_{\setOptLoadings} \quad (NT)^{-1} \Big[ \sum_t \X{t}'\X{t} &- (JN)^{-1}\scalesum{l} \scalesum{j} \locsum{k} \coeffs{j}{k}' \optLoadings{j}{k}\optLoadings{l}{k}' \coeffs{l}{k}\Big]
+\end{align*}
+Minimizing the latter expression is equivalent to maximizing, 
+\begin{align*}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2}\scalesum{l} \scalesum{j} \locsum{k} \coeffs{j}{k}' \optLoadings{j}{k}\optLoadings{l}{k}' \coeffs{l}{k}
+\end{align*}
+Each term in the triple sum is a scalar, i.e. $(1 \times 1)$ matrix. Therefore we can freely take its trace, 
+\begin{align*}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2}\scalesum{l} \scalesum{j} \locsum{k} \mathrm{tr} \left \{\coeffs{j}{k}' \optLoadings{j}{k}\optLoadings{l}{k}' \coeffs{l}{k}\right \}
+\end{align*}
+From the cyclic property of the trace, 
+\begin{align*}
+	&\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2}\scalesum{l} \scalesum{j} \locsum{k} \mathrm{tr} \left \{\optLoadings{l}{k}' \coeffs{l}{k} \coeffs{j}{k}' \optLoadings{j}{k} \right \}\\
+	&\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2} \left[ \locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \coeffs{j}{k} \coeffs{j}{k}' \optLoadings{j}{k} \right \} + \textcolor{blue}{2} \locsum{k} \scalesum{j} \sum_{l=-J}^{\textcolor{blue}{j}-1} \mathrm{tr} \left \{\optLoadings{l}{k}' \coeffs{l}{k} \coeffs{j}{k}' \optLoadings{j}{k} \right \} \right]
+\end{align*}
+We recognize the raw wavelet periodogram $\coeffs{l}{k} \coeffs{j}{k}'$ . We replace the latter with the unbiased and consistent estimator of the CEWS, i.e. $\estimCEWS{j}{k}$. \\
+Therefore the first term becomes, 
+\begin{align*}
+	\locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \estimCEWS{j}{k} \optLoadings{j}{k} \right \}
+\end{align*}
+The second term needs a similar treatement. We replace $\coeffs{l}{k} \coeffs{j}{k}'$ with the unbiaised and consistent estimator of \eqref{eq:serial-scale-CEWS} : 
+\begin{align}
+	\Hat{\bm{S}}_{j,j'}(k/T, k/T) = \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M}\sum_{r=-J}^{-1} \sum_{l=-J}^{-1} \bar{A}_{j,l}^{(j',r)} \coeffs{j}{k+m} \coeffs{j'}{k+m}'
+\end{align}
+where $\bar{A}_{j,l}^{(j',l')} = \sum_{\tau}\Psi_{j,j'}(\tau)\Psi_{l,l'}(\tau)$ and $\Psi_{j,j'}(\tau) = \sum_{t} \wavelet{j}{0}{t}\wavelet{j'}{\tau}{t}$, the inner product operator of the cross-correlation wavelet functions and the \emph{Cross-Correlation Wavelet Function}, respectively. \textcolor{red}{In his thesis Koch} showed that this CCWF inherit the same properties as the autocorrelation function. One of the latter is that the functions in that family are linearly indepedent of each other. Consequently, the inner product operator of that family is invertible.  \\
+
+The second term on the maximization problem thus reads, 
+\begin{align*}
+	2 \locsum{k} \scalesum{j} \sum_{l=-J}^{j-1} \mathrm{tr} \left \{\optLoadings{l}{k}' \Hat{\bm{S}}_{j,l}(k/T, k/T) \optLoadings{j}{k} \right \}
+\end{align*}
+Consequently, the whole optimization problem is changed into
+\begin{align*}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2} \left[ \locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \estimCEWS{j}{k} \optLoadings{j}{k} \right \} + 2 \locsum{k} \scalesum{j} \sum_{l=-J}^{j-1} \mathrm{tr} \left \{\optLoadings{l}{k}' \Hat{\bm{S}}_{j,l}(k/T, k/T) \optLoadings{j}{k} \right \} \right]
+\end{align*}
+which is asymptotically equivalent to (see Park et al. (2014)),
+\begin{align*}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2} \left[ \locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \CEWS{j}{k} \optLoadings{j}{k} \right \} + 2 \locsum{k} \scalesum{j} \sum_{l=-J}^{j-1} \mathrm{tr} \left \{\optLoadings{l}{k}' \bm{S}_{j,l}(k/T, k/T) \optLoadings{j}{k} \right \} \right]
+\end{align*}
+The last term is zero by assumption \eqref{eq:scale-indep-spectrum}, 
+\begin{align*}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2} \locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \CEWS{j}{k} \optLoadings{j}{k} \right \}
+\end{align*}
+Finally, we get back the feasible problem, 
+\begin{align}\label{eq:empiricalOptimization}
+	\max_{\setOptLoadings} \quad (JT)^{-1}N^{-2} \locsum{k} \scalesum{j} \mathrm{tr} \left \{\optLoadings{j}{k}' \estimCEWS{j}{k} \optLoadings{j}{k} \right \} + O(M^{-1})
+\end{align}
+where $M(T) \to \infty$ when $T \to \infty$.
+
+This final problem can be decompose into sub-problems and the latter can be solved independently. In other words, the problem \eqref{eq:empiricalOptimization} is maximized when each term in the double sum is also maximized. \textcolor{red}{(Proof)}
+\begin{align*}
+	\textcolor{blue}{\max_{\setOptLoadings}} \quad (JT)^{-1} \locsum{k} \scalesum{j} N^{-2} \mathrm{tr} \left \{\optLoadings{j}{k}' \estimCEWS{j}{k} \optLoadings{j}{k} \right \} \quad = \quad (JT)^{-1} \locsum{k} \scalesum{j} \textcolor{blue}{\max_{\optLoadings{j}{k}}} \text{ } N^{-2} \mathrm{tr} \left \{\optLoadings{j}{k}' \estimCEWS{j}{k} \optLoadings{j}{k} \right \}
+\end{align*}
+This solution of those final optimization problems are $\sqrt{N}\bm{\tilde{\Lambda}}_{j,k}$, where $\bm{\tilde{\Lambda}}_{j,k}$ is the $(N \times K)$ matrix whose columns are the first $K$ orthonormal eigenvectors of $\estimCEWS{j}{k}$.\\
+
+We obtain the wanted least squares estimators of the loadings and factors as 
+\begin{align}
+	\estimLoadings{j}{k} &= \sqrt{N}\bm{\tilde{\Lambda}}_{j,k} \label{eq:estimatorLoadings}\\
+	\estimFactors{k} &= (JN)^{-1} \scalesum{j} \estimLoadings{j}{k}' \coeffs{j}{k} \label{eq:estimatorFactors}
+\end{align}
+
+\end{document}
+
+
+
