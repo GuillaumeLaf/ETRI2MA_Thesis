@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{bm}
 \usepackage{geometry}
@@ -60,6 +61,8 @@
 \newcommand{\setOptFactors}{\{ \bar{\bm{F}}_{k}\}_{\forall j,k}}
 \newcommand{\idioError}[2]{\bm{\epsilon}_{#1,#2}}
 
+\newtheorem{lemma}{Lemma}
+
 
 \begin{document}
 
@@ -68,6 +71,10 @@
 \subfile{Estimation}
 
 \subfile{CEWS_Convergence}
+
+\clearpage
+\section{Lemmas}
+\subfile{Proofs}
 
 \section{Goals}
 \begin{itemize}

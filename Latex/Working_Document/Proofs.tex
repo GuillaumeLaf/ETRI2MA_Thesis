@@ -1,0 +1,43 @@
+\documentclass[main_document.tex]{subfiles}
+
+\begin{document}
+
+	\begin{lemma} 
+		\label{lem:lemma1}
+		Given the assumptions on the LSW and factor structure, 
+		\begin{align*}
+			\loadings{j}{k} \E{\factors{k}\factors{k'}'} \loadings{j'}{k'}' = 
+				\begin{cases}
+					\CEWS{j}{k} - \E{\idioError{j}{k}\idioError{j}{k}'} \quad & \text{ ,if } j=j' \text{ and } k=k' \\
+					-\E{\idioError{j}{k}\idioError{j'}{k'}'} \quad & \text{ ,otherwise }
+				\end{cases}
+		\end{align*}
+	\end{lemma}
+	\begin{proof}
+		From the factor structure \eqref{eq:factorStructure}, 
+		\[
+		\W{j}{k} \increment{j}{k}\increment{j'}{k'}' \W{j'}{k'} =  \loadings{j}{k} \factors{k} \factors{k'} \loadings{j'}{k'} + \loadings{j}{k}\factors{k}\idioError{j'}{k'}' + \idioError{j}{k}\factors{k'}\loadings{j'}{k'}' + \idioError{j}{k}\idioError{j'}{k'}'
+		\]
+		Taking expectation on both sides, 
+		\[
+		\W{j}{k} \E{\increment{j}{k}\increment{j'}{k'}'} \W{j'}{k'} =  \loadings{j}{k} \E{\factors{k} \factors{k'}} \loadings{j'}{k'} + \loadings{j}{k}\E{\factors{k}\idioError{j'}{k'}'} + \E{\idioError{j}{k}\factors{k'}}\loadings{j'}{k'}' + \E{\idioError{j}{k}\idioError{j'}{k'}'}
+		\]
+
+		The second and third term on the RHS is zero since $F_k \perp \idioError{j'}{k'}, \forall j,k,k'$ (assumption \eqref{}). \\
+		This leaves us with 
+		\[
+		\W{j}{k} \E{\increment{j}{k}\increment{j'}{k'}'} \W{j'}{k'} =  \loadings{j}{k} \E{\factors{k} \factors{k'}} \loadings{j'}{k'} + \E{\idioError{j}{k}\idioError{j'}{k'}'}
+		\]
+
+		Finally, by the assumption \eqref{eq:indepIncrements} on the increments of the LSW representation, 
+		\[
+		\E{\increment{j}{k}\increment{j'}{k'}'} = 
+		\begin{cases}
+			\bm{I}_N  \quad \text{ ,if } j=j' \text{ and } k=k' \\
+			\bm{0}_N \quad \text{ ,otherwise }
+		\end{cases}
+		\]
+		,where $\bm{I}_N$ is the identity matrix of rank $N$ and $\bm{0}_N$ is the null matrix of rank $N$. This along with the definition of the CEWS we obtain the desired result. 
+	\end{proof}
+
+\end{document}

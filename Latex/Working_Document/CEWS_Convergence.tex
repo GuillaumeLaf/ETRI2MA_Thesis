@@ -25,4 +25,65 @@ Consequently,
 		N^{-1} \estimCEWS{j}{k} &= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} [C_t + E_t][C_t + E_t]' \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'} \\
 							   &= N^{-1}  \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{m=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t} \locsum{t'} [C_t C_{t'} + C_t E_{t'}' + E_t C_{t'}' + E_t E_{t'}'] \wavelet{j}{k+s}{t} \wavelet{j}{k+s}{t'}
 	\end{align*}
+
+To further simplify the notation we define the following, 
+\begin{align}
+	K_{j,k} = N^{-1} \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{s=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t}\locsum{t'} C_t C_{t'}' \wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \label{eq:Kappa} \\
+	\Upsilon_{j,k} = N^{-1} \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{s=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t}\locsum{t'} E_t E_{t'}' \wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \label{eq:Upsilon} \\
+	\Theta_{j,k} = N^{-1} \frac{\displaystyle 1}{\displaystyle 2M+1} \sum_{s=-M}^{M} \scalesum{l} \invA{j}{l} \locsum{t}\locsum{t'} C_t E_{t'}' \wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \label{eq:Theta} 
+\end{align}
+The estimator \eqref{eq:finalEstimator} can now be expressed as, 
+\begin{align}
+	N^{-1} \estimCEWS{j}{k} = K_{j,k} + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \label{eq:redefinedEstimator}
+\end{align}
+From Park et al. (2014) this estimator converge to the true Cross-Evoluationary Wavelet Spectrum. The next development assert the same convergence with the estimator redefined by the factor structure. 
+
+First, the expectation of the estimator can be decomposed thanks to \eqref{eq:redefinedEstimator},
+\begin{align*}
+	\E{\estimCEWS{j}{k}} = \E{N K_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Upsilon_{j,k}}
+\end{align*}
+
+Let's turn out focus on the first term. From \eqref{eq:Kappa} and \eqref{eq:C} and the linearity of expectation, the latter is then, 
+\begin{align*}
+	\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\factors{m'}'} \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+\end{align*}
+
+Given the lemma \ref{lem:lemma1}, 
+\begin{align*}
+	\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M}& \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m}} \scalesum{\textcolor{blue}{p}} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \\ 
+	&- \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m,m'}} \scalesum{\textcolor{blue}{p,p'}} \E{\idioError{p}{m}\idioError{p'}{m'}'}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+\end{align*}
+which is equivalent to
+\begin{align*}
+		\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m} \scalesum{p} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} - \E{\Upsilon{j}{k}} \quad \text{ by } \eqref{eq:Upsilon} \\
+					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\locsum{t'}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t'} - \E{\Upsilon{j}{k}} \\
+					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \left[\locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}}\\
+					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \CEWS{p}{\textcolor{blue}{n+k}} \left[\locsum{t}\wavelet{p}{\textcolor{blue}{n+k}}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}}  \text{ by change of variable : } m=n+k \\
+					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \left[\CEWS{p}{k} + O(\frac{n}{T})\right] \left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}} \text{ by Lipschitz continuity} \\
+					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} \locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}} + O(T^{-1})
+\end{align*}
+Nason et al. (2000) proved that $\locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} = A_{p,j}$. Consequently, 
+\begin{align*}
+	\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} A_{p,j} - \E{\Upsilon{j}{k}} + O(T^{-1}) \\
+				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \E{\coeffs{j}{k}\coeffs{j}{k}'} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by the expectation of the raw periodogram. }\\
+				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \E{\scalesum{j} \invA{j}{l} \coeffs{j}{k}\coeffs{j}{k}'} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by linearity of expectation}\\
+				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \CEWS{j}{k} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by expectation of the corrected periodogram.}\\
+				&= \CEWS{j}{k} - \E{\Upsilon{j}{k}} + O(T^{-1}) 
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
