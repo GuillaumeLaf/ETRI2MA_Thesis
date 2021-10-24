@@ -1,7 +1,7 @@
 \documentclass[main_document.tex]{subfiles}
 
 \begin{document}
-
+% Lemma 1 <<----------------------------------------------------------------------------------------------------------------------------------------->>
 	\begin{lemma} 
 		\label{lem:lemma1}
 		Given the assumptions on the LSW and factor structure, 
@@ -39,5 +39,76 @@
 		\]
 		,where $\bm{I}_N$ is the identity matrix of rank $N$ and $\bm{0}_N$ is the null matrix of rank $N$. This along with the definition of the CEWS we obtain the desired result. 
 	\end{proof}
+
+% Lemma 2 <<----------------------------------------------------------------------------------------------------------------------------------------->>
+\begin{lemma}
+	Given the assumption on the LSW and factor structure, \textcolor{red}{(rate of convergence ?)}
+	\begin{align*}
+		\Var{N K_{j,k}} \to 0 \quad \text{ if } T \to \infty
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	\begin{align*}
+		\Var{N K_{j,k}} &= \Var{\frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \factors{m}\factors{m'}' \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}} \quad \text{ by } \eqref{eq:Kappa}, \eqref{eq:C}\\
+				    &\leq \E{\left(\frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \factors{m}\factors{m'}' \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}\right)^{\textcolor{red}{2}}} \\
+				    &= \left( \frac{\displaystyle 1}{\displaystyle 2M+1} \scalesum{l}\invA{j}{l} \right)^{2} \E{\sum_{s_0,s_1 = -M}^{M} \sum_{\substack{m_0,m_0' \\ m_1,m_1'=0}}^{T}\sum_{\substack{mp_0,p_0' \\ p_1,p_1'=-J}}^{-1}\loadings{p_0}{m_0}\factors{m_0}\factors{m_0'}' \loadings{p_1'}{m_1'}'\loadings{p_1}{m_1}\factors{m_1}\factors{m_1'}' \loadings{p_1'}{m_1'}' \\
+	 \sum_{\substack{t_0,t_0' \\ t_1,t_1'}} \wavelet{p_0}{m_0}{t_0}\wavelet{p_0'}{m_0'}{t_0'}\wavelet{j}{k+s_0}{t_0}\wavelet{j}{k+s_0}{t_0'}\wavelet{p_1}{m_1}{t_1}\wavelet{p_1'}{m_1'}{t_1'}\wavelet{j}{k+s_1}{t_1}\wavelet{j}{k+s_1}{t_1'}}
+	\end{align*}
+\end{proof}
+% Theorem 1 <<----------------------------------------------------------------------------------------------------------------------------------------->>
+	\begin{theorem} \label{thm:CEWS_Components}
+		Given the assumptions on the LSW representation, the factor structure and the definitions \eqref{eq:Kappa}, \eqref{eq:Theta} and \eqref{eq:Upsilon},
+		\begin{align*}
+			\E{N K_{j,k}} &= \CEWS{j}{k} - \E{N\Upsilon{j}{k}} \\
+			\E{N \Theta_{j,k}} &= 0
+		\end{align*}
+	\end{theorem}
+	\begin{proof}
+		Let's turn out focus on the first expectation. From \eqref{eq:Kappa} and \eqref{eq:C} and the linearity of expectation, the latter is then, 
+		\begin{align*}
+			\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\factors{m'}'} \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+		\end{align*}
+		
+		Given the lemma \ref{lem:lemma1}, 
+		\begin{align*}
+			\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M}& \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m}} \scalesum{\textcolor{blue}{p}} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \\ 
+			&- \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m,m'}} \scalesum{\textcolor{blue}{p,p'}} \E{\idioError{p}{m}\idioError{p'}{m'}'}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+		\end{align*}
+		which is equivalent to
+		\begin{align*}
+				\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m} \scalesum{p} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} - \E{N\Upsilon{j}{k}} \quad \text{ by } \eqref{eq:Upsilon} \\
+							&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\locsum{t'}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t'} - \E{N\Upsilon{j}{k}} \\
+							&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \left[\locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{N\Upsilon{j}{k}}\\
+							&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \CEWS{p}{\textcolor{blue}{n+k}} \left[\locsum{t}\wavelet{p}{\textcolor{blue}{n+k}}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{N\Upsilon{j}{k}}  \text{ by change of variable : } m=n+k \\
+							&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \left[\CEWS{p}{k} + O(\frac{n}{T})\right] \left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{N\Upsilon{j}{k}} \text{ by Lipschitz continuity} \\
+							&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} \locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{N\Upsilon{j}{k}} + O(T^{-1})
+		\end{align*}
+		Nason et al. (2000) proved that $\locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} = A_{p,j}$. Consequently, 
+		\begin{align*}
+			\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} A_{p,j} - \E{N\Upsilon{j}{k}} + O(T^{-1}) \\
+						&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \E{\coeffs{j}{k}\coeffs{j}{k}'} - \E{N\Upsilon{j}{k}} + O(T^{-1}) \text{ by the expectation of the raw periodogram. }\\
+						&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \E{\scalesum{j} \invA{j}{l} \coeffs{j}{k}\coeffs{j}{k}'} - \E{N\Upsilon{j}{k}} + O(T^{-1}) \text{ by linearity of expectation}\\
+						&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \CEWS{j}{k} - \E{N\Upsilon{j}{k}} + O(T^{-1}) \text{ by expectation of the corrected periodogram.}\\
+						&= \CEWS{j}{k} - \E{N\Upsilon{j}{k}} + O(T^{-1}) 
+		\end{align*}
+
+		Now, the second expectation is developed analoguously,
+		\begin{align*}
+			\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\idioError{p'}{m'}'} \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+		\end{align*}
+		However, given that $\factors{k} \perp \idioError{j'}{k'}, \forall j,k,k'$, the covariance matrix is null - i.e. $\E{\factors{m}\idioError{p'}{m'}'} = \bm{0}_{(K \times N)}$. Finally, the compact support of the wavelets and the boundedness of all other terms \textcolor{red}{(additional assumption on $\loadings{j}{k}$ !)} provides the desired result. 
+	\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}

@@ -42,34 +42,17 @@ First, the expectation of the estimator can be decomposed thanks to \eqref{eq:re
 \begin{align*}
 	\E{\estimCEWS{j}{k}} = \E{N K_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Upsilon_{j,k}}
 \end{align*}
-
-Let's turn out focus on the first term. From \eqref{eq:Kappa} and \eqref{eq:C} and the linearity of expectation, the latter is then, 
+Theorem \ref{thm:CEWS_Components} prove the asymptotic unbiaisedness of the CEWS estimator.
 \begin{align*}
-	\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\factors{m'}'} \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+	\E{\estimCEWS{j}{k}} &= \CEWS{j}{k} - \E{N\Upsilon{j}{k}} + O(T^{-1}) + \bm{0}_{N} + \bm{0}_{N} + \E{N \Upsilon_{j,k}} \\
+				    &= \CEWS{j}{k} + O(T^{-1})
 \end{align*}
 
-Given the lemma \ref{lem:lemma1}, 
-\begin{align*}
-	\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M}& \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m}} \scalesum{\textcolor{blue}{p}} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} \\ 
-	&- \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{\textcolor{blue}{t,t',m,m'}} \scalesum{\textcolor{blue}{p,p'}} \E{\idioError{p}{m}\idioError{p'}{m'}'}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
-\end{align*}
-which is equivalent to
-\begin{align*}
-		\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m} \scalesum{p} \CEWS{p}{m}\wavelet{p}{m}{t}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'} - \E{\Upsilon{j}{k}} \quad \text{ by } \eqref{eq:Upsilon} \\
-					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\locsum{t'}\wavelet{p}{m}{t'}\wavelet{j}{k+s}{t'} - \E{\Upsilon{j}{k}} \\
-					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{m} \scalesum{p} \CEWS{p}{m} \left[\locsum{t}\wavelet{p}{m}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}}\\
-					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \CEWS{p}{\textcolor{blue}{n+k}} \left[\locsum{t}\wavelet{p}{\textcolor{blue}{n+k}}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}}  \text{ by change of variable : } m=n+k \\
-					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{n} \scalesum{p} \left[\CEWS{p}{k} + O(\frac{n}{T})\right] \left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}} \text{ by Lipschitz continuity} \\
-					&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} \locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} - \E{\Upsilon{j}{k}} + O(T^{-1})
-\end{align*}
-Nason et al. (2000) proved that $\locsum{n}\left[\locsum{t}\wavelet{p}{n+k}{t}\wavelet{j}{k+s}{t}\right]^{2} = A_{p,j}$. Consequently, 
-\begin{align*}
-	\E{N K_{j,k}} &= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \scalesum{p} \CEWS{p}{k} A_{p,j} - \E{\Upsilon{j}{k}} + O(T^{-1}) \\
-				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l}  \E{\coeffs{j}{k}\coeffs{j}{k}'} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by the expectation of the raw periodogram. }\\
-				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \E{\scalesum{j} \invA{j}{l} \coeffs{j}{k}\coeffs{j}{k}'} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by linearity of expectation}\\
-				&= \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \CEWS{j}{k} - \E{\Upsilon{j}{k}} + O(T^{-1}) \text{ by expectation of the corrected periodogram.}\\
-				&= \CEWS{j}{k} - \E{\Upsilon{j}{k}} + O(T^{-1}) 
-\end{align*}
+Next, to analyse the variance of the estimator, we define $\mathcal{S} = \{ K_{j,k}, \Theta_{j,k}, \Theta_{j,k}', \Upsilon_{j,k} \}$ and we decompose the variance as follows : 
+\begin{align}
+	\Var{\estimCEWS{j}{k}} = \Var{N K_{j,k}} + \Var{N \Theta_{j,k}} + \Var{N \Theta_{j,k}'} + \Var{N \Upsilon_{j,k}} + \sum_{i \in \mathcal{S}} \sum_{\substack{j \in \mathcal{S} \\ j \neq i}} \Cov{Ni}{N j}
+\end{align}
+
 
 
 
