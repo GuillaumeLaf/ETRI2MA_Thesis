@@ -34,7 +34,7 @@
 	\end{itemize}
 
 We can define the \emph{Cross-Evoluationary Wavelet Spectrum} $(N \times N)$ matrix : $\bm{S}_{j}(z) = \bm{W}_{j}(z)\bm{W}_{j}(z)'$.
-This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u')}(z,\tau) = \sum_{j=-\infty}^{-1} S_{j}^{(u,u')}(z) \ACwavelet{j}{\tau}$ where $\ACwavelet{j}{\tau} = \sum_{k} \wavelet{j}{k}{0}\wavelet{j}{k}{\tau}$, the \emph{autocorrelation wavelet}. The latter also define the \emph{inner product matrix of discrete autocorrelation wavelets} : $A_{jl} = \sum_{\tau}\ACwavelet{j}{\tau}\ACwavelet{l}{\tau}$, $A = \left\{ A_{jl}\right\}_{j,l \in \mathbb{N}}$ and its inverse : $\bar{A} = A^{-1}$.\\
+This gives us the ability to express the \emph{local autocovariance} : $c^{(u,u')}(z,\tau) = \sum_{j=-\infty}^{-1} S_{j}^{(u,u')}(z) \ACwavelet{j}{\tau}$ where $\ACwavelet{j}{\tau} = \sum_{k} \wavelet{j}{k}{0}\wavelet{j}{k}{\tau}$, the \emph{autocorrelation wavelet}. The latter also define the \emph{inner product matrix of discrete autocorrelation wavelets} : $A_{jl} = \sum_{\tau}\ACwavelet{j}{\tau}\ACwavelet{l}{\tau}$, $A = \left\{ A_{jl}\right\}_{j,l \in \mathbb{N}}$ and its inverse : $\bar{A} = A^{-1}$.A rather simple extension of the autocorrelation wavelet is the \emph{cross-correlation wavelet} which charaterizes the dependence between two wavelets at different scales. The latter wavelet is thus defined as $\CCwavelet{j}{j'}{\tau} = \sum_{k} \wavelet{j}{k}{0}\wavelet{j'}{k}{\tau}$.\\
 
 Each $(m,n)$-element of the Cross-Evolutionary Wavelet Spectrum can be expressed as 
 \begin{align*}
@@ -52,7 +52,8 @@ S_{j,j'}^{(m,n)}\left( \textcolor{blue}{k/T}, \textcolor{blue}{k/T} \right) =
 		0 & \text{ otherwise}
 	\end{cases}
 \end{align}
-This assumption \textcolor{orange}{(possible improvement : condition similar to Chamberlain ?)}  imposes no dependence between different scales of decomposition. Notice that we don't restrict the serial dependence. 
+This assumption \textcolor{orange}{(possible improvement : condition similar to Chamberlain ?)}  imposes no dependence between different scales of decomposition. Notice that we don't restrict the serial dependence. \\
+
 
 \subsection{Estimation of MvLSW}
 		\begin{itemize}
@@ -86,8 +87,10 @@ This assumption \textcolor{orange}{(possible improvement : condition similar to 
 		\item Assumptions : 	
 			\begin{enumerate}
 				\item $\factors{k} \sim (\bm{0}, \bm{\Sigma}_F)$, where $\bm{\Sigma}_F$ is a diagonal positive definite $(K \times K)$ matrix. 
+				\item $\E{{F_{k}^{(u)}}^4} < \infty, \forall k,u$
 				\item $\factors{k} \perp \idioError{j}{k'}$, $\forall j,k,k'$
 				\item $\idioError{j}{k} \sim (\bm{0}, \bm{\Sigma}_{\epsilon})$, where $\bm{\Sigma}_{\epsilon}$ has bounded eigenvalues. \textcolor{blue}{Note : make $\bm{\Sigma}_{\epsilon}$ dependent on time ? what about serial dependence ?}
+				\item $\E{{\epsilon_{j,k}^{(u)}}^{4}} < \infty \quad \forall j,k,u$
 				\item  $\loadings{j}{k}'\loadings{l}{m} = \bm{0}, \forall j \neq l, \forall k \neq m$. 
 			\end{enumerate}
 		\item We can then represent the CEWS with the factor structure : 

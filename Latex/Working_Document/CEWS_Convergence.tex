@@ -49,7 +49,7 @@ Theorem \ref{thm:CEWS_Components} prove the asymptotic unbiaisedness of the CEWS
 \end{align*}
 
 Next, to analyse the variance of the estimator, we define $\mathcal{S} = \{ K_{j,k}, \Theta_{j,k}, \Theta_{j,k}', \Upsilon_{j,k} \}$ and we decompose the variance as follows : 
-\begin{align}
+\begin{align}\label{eq:estimatorVariance}
 	\Var{\estimCEWS{j}{k}} = \Var{N K_{j,k}} + \Var{N \Theta_{j,k}} + \Var{N \Theta_{j,k}'} + \Var{N \Upsilon_{j,k}} + \sum_{i \in \mathcal{S}} \sum_{\substack{j \in \mathcal{S} \\ j \neq i}} \Cov{Ni}{N j}
 \end{align}
 

@@ -42,18 +42,25 @@
 
 % Lemma 2 <<----------------------------------------------------------------------------------------------------------------------------------------->>
 \begin{lemma}
-	Given the assumption on the LSW and factor structure, \textcolor{red}{(rate of convergence ?)}
+	Given the assumption on the LSW and factor structure and the set $\mathcal{S}$ defined in \eqref{eq:estimatorVariance}, when $T \to \infty$ \textcolor{red}{(rate of convergence ?)}
 	\begin{align*}
-		\Var{N K_{j,k}} \to 0 \quad \text{ if } T \to \infty
+		\Var{N i} \to 0 \quad \forall i \in \mathcal{S}
 	\end{align*}
 \end{lemma}
 \begin{proof}
+When $i = K_{j,k}$, 
 	\begin{align*}
 		\Var{N K_{j,k}} &= \Var{\frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \factors{m}\factors{m'}' \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}} \quad \text{ by } \eqref{eq:Kappa}, \eqref{eq:C}\\
 				    &\leq \E{\left(\frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \factors{m}\factors{m'}' \loadings{p'}{m'}' \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}\right)^{\textcolor{red}{2}}} \\
-				    &= \left( \frac{\displaystyle 1}{\displaystyle 2M+1} \scalesum{l}\invA{j}{l} \right)^{2} \E{\sum_{s_0,s_1 = -M}^{M} \sum_{\substack{m_0,m_0' \\ m_1,m_1'=0}}^{T}\sum_{\substack{mp_0,p_0' \\ p_1,p_1'=-J}}^{-1}\loadings{p_0}{m_0}\factors{m_0}\factors{m_0'}' \loadings{p_1'}{m_1'}'\loadings{p_1}{m_1}\factors{m_1}\factors{m_1'}' \loadings{p_1'}{m_1'}' \\
-	 \sum_{\substack{t_0,t_0' \\ t_1,t_1'}} \wavelet{p_0}{m_0}{t_0}\wavelet{p_0'}{m_0'}{t_0'}\wavelet{j}{k+s_0}{t_0}\wavelet{j}{k+s_0}{t_0'}\wavelet{p_1}{m_1}{t_1}\wavelet{p_1'}{m_1'}{t_1'}\wavelet{j}{k+s_1}{t_1}\wavelet{j}{k+s_1}{t_1'}}
+				    &= \left( \frac{\displaystyle 1}{\displaystyle 2M+1} \scalesum{l}\invA{j}{l} \right)^{2} E \Bigg [ \sum_{s_0,s_1 = -M}^{M} \sum_{\substack{m_0,m_0' \\ m_1,m_1'=0}}^{T}\sum_{\substack{mp_0,p_0' \\ p_1,p_1'=-J}}^{-1}\loadings{p_0}{m_0}\factors{m_0}\factors{m_0'}' \loadings{p_1'}{m_1'}'\loadings{p_1}{m_1}\factors{m_1}\factors{m_1'}' \loadings{p_1'}{m_1'}' \\
+	 & \hspace{3cm} \sum_{\substack{t_0,t_0' \\ t_1,t_1'}} \wavelet{p_0}{m_0}{t_0}\wavelet{p_0'}{m_0'}{t_0'}\wavelet{j}{k+s_0}{t_0}\wavelet{j}{k+s_0}{t_0'}\wavelet{p_1}{m_1}{t_1}\wavelet{p_1'}{m_1'}{t_1'}\wavelet{j}{k+s_1}{t_1}\wavelet{j}{k+s_1}{t_1'} \Bigg ]\\
+	&= \left( \frac{\displaystyle 1}{\displaystyle 2M+1} \scalesum{l}\invA{j}{l} \right)^{2} E \Bigg [ \sum_{\substack{m_0,m_0' \\ m_1,m_1'=0}}^{T}\sum_{\substack{mp_0,p_0' \\ p_1,p_1'=-J}}^{-1}\loadings{p_0}{m_0}\factors{m_0}\factors{m_0'}' \loadings{p_1'}{m_1'}'\loadings{p_1}{m_1}\factors{m_1}\factors{m_1'}' \loadings{p_1'}{m_1'}' \\
+	 & \sum_{s_0=-M}^{M} \sum_{t_0} \wavelet{p_0}{m_0}{t_0}\wavelet{j}{k+s_0}{t_0}\sum_{t_0'}\wavelet{p_0'}{m_0'}{t_0'}\wavelet{j}{k+s_0}{t_0'}\sum_{s_1=-M}^{M}\sum_{t_1}\wavelet{p_1}{m_1}{t_1}\wavelet{j}{k+s_1}{t_1}\sum_{t_1'}\wavelet{p_1'}{m_1'}{t_1'}\wavelet{j}{k+s_1}{t_1'} \Bigg ]\\
+  	&= \frac{\displaystyle 1}{\displaystyle (2M+1)^2} \left(\scalesum{l}\invA{j}{l} \right)^{2} E \Bigg [ \sum_{\substack{m_0,m_0' \\ m_1,m_1'=0}}^{T}\sum_{\substack{mp_0,p_0' \\ p_1,p_1'=-J}}^{-1}\loadings{p_0}{m_0}\factors{m_0}\factors{m_0'}' \loadings{p_1'}{m_1'}'\loadings{p_1}{m_1}\factors{m_1}\factors{m_1'}' \loadings{p_1'}{m_1'}' \\
+	 & \sum_{s_0=-M}^{M} \CCwavelet{p_0}{j}{m_0 - k - s_0} \CCwavelet{p_0'}{j}{m_0' - k - s_0} \sum_{s_1=-M}^{M}\CCwavelet{p_1}{j}{m_1 - k - s_1}\CCwavelet{p_1'}{j}{m_1' - k - s_1} \Bigg ] \text{ by def. of CCWF.}
 	\end{align*}
+All sums are finite when $T \to \infty$ since the cross-correlation wavelet functions have bounded support \textcolor{red}{(Proof)}. However we need the additional assumption that $\E{{F_{k}^{(u)}}^{4}} < \infty$. The whole expression tends to zero if $M(T) \to \infty$ when $T \to \infty$ \textcolor{orange}{(rate of convergence ?)}. \\
+The proofs when $i = \mathcal{S} \setminus \{K_{j,k}\} $ are analoguous with the additional requirement that $\E{{\epsilon_{j,k}^{(u)}}^{4}} < \infty$. 
 \end{proof}
 % Theorem 1 <<----------------------------------------------------------------------------------------------------------------------------------------->>
 	\begin{theorem} \label{thm:CEWS_Components}
