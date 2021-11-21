@@ -41,7 +41,7 @@
 	\end{proof}
 
 % Lemma 2 <<----------------------------------------------------------------------------------------------------------------------------------------->>
-\begin{lemma}
+\begin{lemma}\label{lem:lemma2}
 	Given the assumption on the LSW and factor structure and the set $\mathcal{S}$ defined in \eqref{eq:estimatorVariance}, when $T \to \infty$ \textcolor{red}{(rate of convergence ?)}
 	\begin{align*}
 		\Var{N i} \to 0 \quad \forall i \in \mathcal{S}
@@ -101,7 +101,7 @@ The proofs when $i = \mathcal{S} \setminus \{K_{j,k}\} $ are analoguous with the
 
 		Now, the second expectation is developed analoguously,
 		\begin{align*}
-			\E{N K_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\idioError{p'}{m'}'} \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
+			\E{N \Theta_{j,k}} = \frac{\displaystyle 1}{\displaystyle 2M+1}\sum_{s=-M}^{M} \scalesum{j} \invA{j}{l} \locsum{t,t',m,m'} \scalesum{p,p'} \loadings{p}{m} \E{\factors{m}\idioError{p'}{m'}'} \wavelet{p}{m}{t}\wavelet{p'}{m'}{t'}\wavelet{j}{k+s}{t}\wavelet{j}{k+s}{t'}
 		\end{align*}
 		However, given that $\factors{k} \perp \idioError{j'}{k'}, \forall j,k,k'$, the covariance matrix is null - i.e. $\E{\factors{m}\idioError{p'}{m'}'} = \bm{0}_{(K \times N)}$. Finally, the compact support of the wavelets and the boundedness of all other terms \textcolor{red}{(additional assumption on $\loadings{j}{k}$ !)} provides the desired result. 
 	\end{proof}

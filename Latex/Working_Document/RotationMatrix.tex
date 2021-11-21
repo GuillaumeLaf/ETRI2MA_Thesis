@@ -1,0 +1,103 @@
+\documentclass[main_document.tex]{subfiles}
+
+\begin{document}
+	\section{Rotation Matrix $\R{j}{k}$}
+
+	In this section we find an expression for the rotation matrix $\R{j}{k}$ (Recall the inherent indeterminacy of factor models). Imposing particular identification restrictions on the loadings and factors will specify a unique rotation matrix. In our factor model, we don' t impose any identification restrictions. Consequently, the researcher apply our model has the responsability of stating relevant restriction given the context of interest. 
+
+	The rotation matrix appears in the convergence of loadings and factors. 
+	\begin{align}
+		\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k} \label{eq:loadingsConv}\\
+		\estimFactors{k} - \invR{j}{k} \factors{k} \label{eq:factorsConv}
+	\end{align}
+	
+	Take first \eqref{eq:loadingsConv}. Given the formula for the estimator of the loadings - i.e. \eqref{eq:estimatorLoadings}, we obtain : 
+	\begin{align*}
+		\estimLoadings{j}{k} &= N^{-1} \estimCEWS{j}{k} \estimLoadings{j}{k} \estimInvEigs{j}{k} \\
+		\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k} &= N^{-1} \estimCEWS{j}{k} \estimLoadings{j}{k} \estimInvEigs{j}{k} - \loadings{j}{k}\R{j}{k} \\
+		&= \left[  K_{j,k} + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k} \estimInvEigs{j}{k} - \loadings{j}{k}\R{j}{k} \quad \text{ by } \eqref{eq:redefinedEstimator}
+	\end{align*}
+The first restriction we can impose on the rotation matrix $\R{j}{k}$ is $\R{j}{k} = \alpha \estimLoadings{j}{k} \estimInvEigs{j}{k}$ for some $\alpha$, $(K \times N)$ matrix. Such that, 
+
+	\begin{align*}
+		\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k} &= \left[  K_{j,k} - \loadings{j}{k}\alpha + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k} \estimInvEigs{j}{k} 
+	\end{align*}
+In order to have unbiaised and consistent estimation of the loadings, we require respectively, 
+	\begin{align}
+		\E{\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k}} = 0 \label{eq:unbiaisedLoadingsEstim} \\
+		\Var{\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k}} \to 0 \label{eq:consistentLoadingsEstim}
+	\end{align}
+In Hilbert space, the restriction \eqref{eq:consistentLoadingsEstim} is equivalent to the \textbf{euclidiean norm} tending to zero, 
+	\begin{align}
+		\norm{\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k}} \to 0
+	\end{align}
+Consequently, 
+	\begin{align*}
+		\textcolor{blue}{N^{-\frac{1}{2}}}\norm{\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k}} &= \textcolor{blue}{N^{-\frac{1}{2}}}\norm{\left[  K_{j,k} - \loadings{j}{k}\alpha + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k} \estimInvEigs{j}{k} } \\
+		& \leq \norm{\left[  K_{j,k} - \loadings{j}{k}\alpha + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right]} \norm{\frac{\estimLoadings{j}{k}}{\sqrt{N}}} \norm{\estimInvEigs{j}{k}}\\
+		& \leq \left[ \norm{ K_{j,k} - \loadings{j}{k}\alpha + \Upsilon_{j,k}} + 2 \norm{\Theta_{j,k}}\right] \norm{\frac{\estimLoadings{j}{k}}{\sqrt{N}}} \norm{\estimInvEigs{j}{k}} \\
+		\textcolor{blue}{N^{\frac{1}{2}}}\norm{\estimLoadings{j}{k} - \loadings{j}{k}\R{j}{k}} & \leq \left[ \norm{\textcolor{blue}{N} K_{j,k} - \textcolor{blue}{N}\loadings{j}{k}\alpha + \textcolor{blue}{N}\Upsilon_{j,k}} + 2 \norm{\textcolor{blue}{N}\Theta_{j,k}}\right] \norm{\frac{\estimLoadings{j}{k}}{\sqrt{N}}} \norm{\estimInvEigs{j}{k}}
+	\end{align*}
+First, we analyse the convergence of the first term on the RHS. \\
+Its expectation is, 
+\begin{align*}
+	\E{N K_{j,k} - N\loadings{j}{k}\alpha + N\Upsilon_{j,k}} &= \E{N K_{j,k}} - \E{N\loadings{j}{k}\alpha} + \E{N\Upsilon_{j,k}} \\
+		&= \CEWS{j}{k} - \E{N\Upsilon_{j,k}} - \E{N\loadings{j}{k}\alpha} + \E{N\Upsilon_{j,k}} \quad \text{ by theorem } \eqref{thm:CEWS_Components} \\
+	      &= \CEWS{j}{k} - \E{N\loadings{j}{k}\alpha}
+\end{align*}
+Therefore, given the unbiaisedness restriction \eqref{eq:unbiaisedLoadingsEstim} we obtain another constraint for the rotation matrix. 
+\begin{align}
+	\E{N\loadings{j}{k}\alpha} = \CEWS{j}{k} \label{eq:rotationExpectationConstraint}
+\end{align}
+Note that we also need $\Var{N K_{j,k} - N\loadings{j}{k}\alpha + N\Upsilon_{j,k}} \to 0$. \textcolor{red}{(See next part)}
+\begin{align*}
+	\Var{N K_{j,k} - N\loadings{j}{k}\alpha + N\Upsilon_{j,k}} = \Var{N K_{j,k}} &+ \Var{N \loadings{j}{k} \alpha} + \Var{N \Upsilon_{j,k}} \\ &+ 2 \Cov{N K_{j,k}}{N \loadings{j}{k} \alpha} + 2 \Cov{N K_{j,k}}{N \Upsilon_{j,k}} + 2\Cov{N \loadings{j}{k} \alpha}{N \Upsilon_{j,k}}
+\end{align*}
+By the result of \ref{lem:lemma2},
+\begin{align} \label{eq:varWithAlpha}
+	\Var{N K_{j,k} - N\loadings{j}{k}\alpha + N\Upsilon_{j,k}} = \Var{N \loadings{j}{k} \alpha} + 2 \Cov{N K_{j,k}}{N \loadings{j}{k} \alpha} + 2\Cov{N \loadings{j}{k} \alpha}{N \Upsilon_{j,k}}
+\end{align}
+
+\subsection{Candidate Rotation matrix}
+This section develop a rotation matrix candidate.\\
+Given the expectation restriction \eqref{eq:rotationExpectationConstraint}, and the fact that $\estimCEWS{j}{k}$ is an asymptotically unbiaised estimator of $\CEWS{j}{k}$,
+\begin{align*}
+	\E{N \loadings{j}{k} \alpha} &= \E{\estimCEWS{j}{k}}\\
+					   &= \E{N K_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Theta_{j,k}} + \E{N \Upsilon_{j,k}} \quad \text{ by } \eqref{eq:redefinedEstimator}\\
+					   &= \E{N K_{j,k}} +  0 +  0 + \E{N \Upsilon_{j,k}} \quad \text{ by theorem } \ref{thm:CEWS_Components}.\\
+				   	   &= \E{N K_{j,k} + N \Upsilon_{j,k}}\\
+					   &= \E{N \textcolor{blue}{\loadings{j}{k}\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1}} K_{j,k} + N \textcolor{blue}{\loadings{j}{k}\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1}}\Upsilon_{j,k}}\\
+					   &= \E{N\loadings{j}{k}\textcolor{blue}{\left(\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1} K_{j,k} +\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1} \Upsilon_{j,k}\right)} }
+\end{align*}
+Our \underline{candidate} $\alpha$ is therefore $\alpha = \left(\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1} K_{j,k} +\loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1} \Upsilon_{j,k}\right)$ \textcolor{red}{(invertibility of matrix ?)}. By using the latter $\alpha$ we obtain the desired unbiaisedness on the loadings by construction. Do we also have the consistency of the estimator ? We answer this question by analysing the 3 terms in \eqref{eq:varWithAlpha},
+\begin{align*}
+	\Var{N\loadings{j}{k}\alpha} &= \Var{N K_{j,k} + N \Upsilon_{j,k}} \\
+					    &= \Var{N K_{j,k}} + \Var{N \Upsilon_{j,k}} + 2 \Cov{N K_{j,k}}{N \Upsilon_{j,k}}\\
+					    &= 0 + 0 + 0 \quad \text{ by lemma } \ref{lem:lemma1} 
+\end{align*}
+The final rotation matrix is therefore given by, 
+\begin{align}\label{eq:estimR}
+	\estimR{j}{k} = \loadings{j}{k}'(\loadings{j}{k}\loadings{j}{k}')^{-1}\left[ K_{j,k} + \Upsilon_{j,k} \right]\estimLoadings{j}{k}\estimInvEigs{j}{k}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

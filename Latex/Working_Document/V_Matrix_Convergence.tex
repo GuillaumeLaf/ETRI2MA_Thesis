@@ -1,0 +1,214 @@
+\documentclass[main_document.tex]{subfiles}
+
+\begin{document}
+
+	\section{Eigenvalue matrix $\V{j}{k}$}
+	This section will be dedicated to providing a charaterization of the eigenvalue matrix obtained from the eigendecomposition of the CEWS matrix (and the estimator of the CEWS) in terms of the factor model component. 
+
+	\subsection{Covariance matrix of $\factors{k}$}
+	In this section we will analyse an estimator of the covariance matrix of $\factors{k}$. Define the wavelet estimator by, 
+\begin{align}
+	\estimCovFactorWav{j}{k} &=  \frac{\displaystyle 1}{\displaystyle 2M+1} \smoothsum{s} \locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m} \label{eq:estimCovFWav}
+\end{align} 
+The estimator is an average of random variables. This allows us to use a law of large number to show the convergence. In other words, , under some conditions on $Y_{j,k+s} := \locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m}$ the estimator converges to $\Sigma_{j,k}$.
+The expectation of the random variables $Y_{j,k+s}$ is, 
+\begin{align*}
+	\E{\locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m}} &= \locsum{m} \E{\factors{m}\factors{m}'} \squaredWavelet{j}{k+s}{m} \\
+	&= \E{\factors{m}\factors{m}'} \locsum{m} \squaredWavelet{j}{k+s}{m} \hspace{1cm} \text{ (iid factors) }\\
+	&=  \E{\factors{m}\factors{m}'} 
+\end{align*}
+by definition of wavelets. \\
+The random variables $Y_{j,k+s}$ are identically distributed but not independent. Therefore, it is not sufficient to only consider their variances. By Chebyshev inequality, a sufficent condition for convergence is $\abs{\Cov{Y_{j,k+s}}{Y_{j,k+s\textcolor{blue}{+i}}}} \to 0$ when $i \to \infty$. The latter condition is true for this estimator thanks to the finite support of wavelets : $N_j = (2^{-j} - 1)(N_{-1}-1)+1$. From know on, we suppose that $\wavelet{j}{k}{t}$ lives on $[ k , k+N_j-1 ]$.
+\begin{align*}
+	\Cov{Y_{j,k+s}}{Y_{j,k+s+i}} &= \E{\locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m}\locsum{m'} \factors{m'}\factors{m'}' \squaredWavelet{j}{k+s+i}{m'}} - \E{\locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m}}^{2} \\
+	&= \E{\locsum{m} \factors{m}\factors{m}' \squaredWavelet{j}{k+s}{m}\locsum{m'} \factors{m'}\factors{m'}' \squaredWavelet{j}{k+s}{m'-i}} - (\Sigma_{j,k}^{F})^{2} \\
+	&= \E{\locsum{m} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m}\locsum{m'} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}} - (\Sigma_{j,k}^{F})^{2} \\ 
+	&= \E{\sum_{m=0}^{N_j-1} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m}\sum_{m'=0}^{N_j-1} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}} - (\Sigma_{j,k}^{F})^{2} \hspace{1cm}\text{(finite support)}
+\end{align*}
+
+Let's focus the analysis in the first term.
+Define, 
+\begin{align}
+	\alpha = min\{ i - 1, N_j - 1 \} \label{const:alpha}\\
+	\gamma = max\{ i - 1, N_j - 1 \} \label{const:gamma}
+\end{align}
+
+\begin{figure}[h]
+	\centering
+	\includestandalone{Pictures/SumDecompositionPicture}
+\end{figure}
+
+Givent the graph above, the first term can be decompose in several sums which are non-overlapping for some. 
+\begin{align*}
+	& E \Bigg[ \left( \sum_{m=0}^{\alpha} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m} + \sum_{m=\alpha+1}^{\gamma} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m} \right) \\ &
+\hspace{3cm }\left( \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i} + \sum_{m'=\gamma+1}^{i+N_j-1} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i} \right) \Bigg]
+\end{align*}
+In order to simplify notations and before distributing the product, define : 
+\begin{center}
+\begin{tabular}{p{9cm}|p{5cm}}
+	$A := \sum_{m=0}^{\alpha} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m}$ & $a := \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m}$ \\
+	$B_1 := \sum_{m=\alpha+1}^{\gamma} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m}$ & $b_1 := \sum_{m=\alpha+1}^{\gamma} \squaredWavelet{j}{0}{m} $\\
+	$B_2 := \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}$ & $b_2  := \sum_{m'=\alpha+1}^{\gamma} \squaredWavelet{j}{0}{m'-i}$\\
+	$C := \sum_{m'=\gamma+1}^{i+N_j-1} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}$ & $c := \sum_{m'=\gamma+1}^{i+N_j-1} \squaredWavelet{j}{0}{m'-i}$ 
+\end{tabular}
+\end{center}
+
+Therefore, the decomposition becomes, 
+\begin{align*}
+	\E{(A + B_1)(B_2 + C)} &= \E{AB_2} + \E{AC} + \E{B_1 B_2} + \E{B_2 C}
+\end{align*}
+Note that by construction all sums in the expectations except the third one are independent. Therefore, 
+\begin{align*}
+	\E{A} \E{B_2} + \E{A}\E{A} + \textcolor{blue}{\E{B_1 B_2}} + \E{B_2} \E{C}
+\end{align*}
+From the iid assumption on the factors, the expectations have the same form, $\Sigma_{F} x$ where $x \in \{a;b_2;c \}$.
+Concerning the expectation $\E{B_1 B_2}$, 
+\begin{align*}
+	\E{B_1 B_2}^{2} &= \E{\sum_{m=\alpha+1}^{\gamma} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m} \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}}^{2}\\
+	& \leq \E{\left( \sum_{m=\alpha+1}^{\gamma} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m} \right)^{2}} \E{\left( \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i} \right)^{2}}
+\end{align*}
+Let's analyse the second factor which "generalizes" the first one. 
+\begin{align*}
+	\E{\left( \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i} \right)^{2}} &= \Var{\sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}} + \Sigma_{F}^{2} \\
+	&= \sum_{m'=\alpha+1}^{\gamma} \Var{\factors{m'+k+s}\factors{m'+k+s}'} \waveletExp{j}{0}{m'-i}{4}\\
+	&= \Var{\factors{m'+k+s}\factors{m'+k+s}'} \sum_{m'=\alpha+1}^{\gamma} \waveletExp{j}{0}{m'-i}{4}
+\end{align*}
+The last sum can further be decomposed, 
+\begin{align*}
+	\sum_{m'=\alpha+1}^{\gamma} \left[ \psi_{j,0}^{2}(m'-i) \right]^{2} &= \left( \sum_{m'=\alpha+1}^{\gamma} \psi_{j,0}^{2}(m'-i) \right)^{2} - \sum_{p=\alpha+1}^{\gamma} \sum_{\substack{q=\alpha+1 \\ q \neq p}}^{\gamma} \squaredWavelet{j}{0}{p-i} \squaredWavelet{j}{0}{q-i} \\
+	& \leq \left( \sum_{m'=\alpha+1}^{\gamma} \psi_{j,0}^{2}(m'-i) \right)^{2} \\
+	& = 
+		\begin{cases}
+			\left( \sum_{m'=i}^{N_j-1} \psi_{j,0}^{2}(m'-i) \right)^{2} & \text{ if } i \in [0, N_j-1] \\
+			\left( \sum_{m'=N_j}^{i} \psi_{j,0}^{2}(m'-i) \right)^{2} & \text{ if } i \notin [0, N_j-1] 
+		\end{cases} \\
+	& = 
+		\begin{cases}
+			\left( \sum_{m'=0}^{N_j-1-i} \psi_{j,0}^{2}(m') \right)^{2} & \text{ if } i \in [0, N_j-1] \\
+			\left( \sum_{m'=N_j-i}^{0} \psi_{j,0}^{2}(m') \right)^{2} & \text{ if } i \notin [0, N_j-1] 
+		\end{cases} \\
+	& 
+		\begin{cases}
+			\leq 1 & \text{ if } i \in [0, N_j-1] \\
+			= 0 & \text{ if } i \notin [0, N_j-1] 
+		\end{cases}
+\end{align*}
+since $\squaredWavelet{j}{0}{t}$ is supported on $t \in [0, N_j-1]$. \\
+Therefore, the second factor becomes, 
+\begin{align*}
+	\E{\left( \sum_{m'=\alpha+1}^{\gamma} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i} \right)^{2}} 
+	\begin{cases}
+		\leq \Var{\factors{m'+k+s}\factors{m'+k+s}'} & \text{ if } i \in [0, N_j-1] \\
+		= 0 & \text{ if } i \notin [0, N_j-1]
+	\end{cases}
+\end{align*}
+Finally we obtain, 
+\begin{align*}
+	\E{B_1 B_2}^{2} &
+	\begin{cases}
+		\leq \Var{\factors{m'+k+s}\factors{m'+k+s}'}^{2} \sum_{m'=i}^{N_j-1}\waveletExp{j}{0}{m'}{4}\sum_{m'=i}^{N_j-1}\waveletExp{j}{0}{m'-i}{4} & \text{ if } i \in [0, N_j-1] \\
+		= 0 & \text{ if } i \notin [0, N_j-1]
+	\end{cases} \\
+	& 	\begin{cases}
+		\leq \Var{\factors{m'+k+s}\factors{m'+k+s}'}^{2} \sum_{m'=i}^{N_j-1}\waveletExp{j}{0}{m'}{4}\sum_{m'=0}^{N_j-1-i}\waveletExp{j}{0}{m'}{4} & \text{ if } i \in [0, N_j-1] \\
+		= 0 & \text{ if } i \notin [0, N_j-1]
+	\end{cases}
+\end{align*}
+, which is a decreasing function of $i$. \\
+Equipped with those simplification we can analyse the decomposition of the covariance of $Y_{j,k+s}$, 
+\begin{align*}
+	\Cov{Y_{j,k+s}}{Y_{j,k+s+i}} &= \E{\sum_{m=0}^{N_j-1} \factors{m+k+s}\factors{m+k+s}' \squaredWavelet{j}{0}{m}\sum_{m'=0}^{N_j-1} \factors{m'+k+s}\factors{m'+k+s}' \squaredWavelet{j}{0}{m'-i}} - (\Sigma_{j,k}^{F})^{2} \\
+	&= \E{A} \E{B_2} + \E{A}\E{A} + \E{B_1 B_2} + \E{B_2} \E{C} \\
+	&= (\Sigma_{j,k}^{F})^{2} \left ( ab_2 + ac + \E{B_1 B_2} + b_1 c - 1 \right) \\
+	&= (\Sigma_{j,k}^{F})^{2} \left ( a (\underbrace{b_2 + c}_{=1}) + \E{B_1 B_2} + b_1 c - 1 \right) \hspace{1cm} \text{ by def. of wavelets } \\
+	&= (\Sigma_{j,k}^{F})^{2} \left( \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} + \E{B_1 B_2} + \sum_{m=\alpha+1}^{\gamma} \squaredWavelet{j}{0}{m} \sum_{m'=\gamma+1}^{i+N_j-1} \squaredWavelet{j}{0}{m'-i} - 1\right) \\ 
+	&= (\Sigma_{j,k}^{F})^{2} \left( \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} + \E{B_1 B_2} + \left( 1 - \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} \right) \left( 1 - \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \right) - 1 \right) \\
+	&= (\Sigma_{j,k}^{F})^{2} \left( \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} + \E{B_1 B_2} - \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} - \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} + \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \right) \\
+	&= (\Sigma_{j,k}^{F})^{2} \left(\E{B_1 B_2} - \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} + \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \right)\\
+	&= (\Sigma_{j,k}^{F})^{2} \left(\E{B_1 B_2} + \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \left( \sum_{m=0}^{\alpha} \squaredWavelet{j}{0}{m} - 1 \right) \right) \\
+	&= (\Sigma_{j,k}^{F})^{2} \left(\E{B_1 B_2} - \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \sum_{m=\alpha+1}^{\gamma} \squaredWavelet{j}{0}{m} \right)
+\end{align*}
+
+By taking the absolute value and considering the above formula for lags $i \notin [0,N_j-1]$, 
+\begin{align*}
+	\abs{\Cov{Y_{j,k+s}}{Y_{j,k+s+i}}} &= \abs{ (\Sigma_{j,k}^{F})^{2}} \abs{0 - 0 \cdot 0} = 0
+\end{align*}
+
+This last relation confirms the sufficient condition to apply the needed law of large numbers. 
+However if $i \in [0,N_j-1]$ we get the upperbound, 
+\begin{align*}
+	\abs{\Cov{Y_{j,k+s}}{Y_{j,k+s+i}}} & \leq \abs{ (\Sigma_{j,k}^{F})^{2}} \abs{\Var{\factors{m'+k+s}\factors{m'+k+s}'}^{2} \sum_{m'=i}^{N_j-1}\waveletExp{j}{0}{m'}{4}\sum_{m'=0}^{N_j-1-i}\waveletExp{j}{0}{m'}{4} - \sum_{m'=0}^{N_j-1-i} \squaredWavelet{j}{0}{m'} \substack{\sum_{m=0}^{N_j-1} \squaredWavelet{j}{0}{m}}_{=1}}
+\end{align*}
+
+
+
+
+
+From this eigendecomposition of the CEWS estimator and \eqref{eq:redefinedEstimator} we get, 
+\begin{align*}
+	\left [ K_{j,k} + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k} = \estimLoadings{j}{k} \estimV{j}{k}
+\end{align*}
+
+Define, 
+\begin{align}
+	Q_{j,k} &= \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'\estimLoadings{j}{k}}{N} \label{eq:Q} \\
+	P_{j,k} &= \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'\loadings{j}{k}}{N} \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \label{eq:P}
+\end{align}
+Therefore we can write, 
+\begin{align}
+	\textcolor{blue}{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N}} \left [ K_{j,k} + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k} &= \textcolor{blue}{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N}} \estimLoadings{j}{k} \estimV{j}{k} \nonumber \\
+	\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} \left [ K_{j,k} + \Theta_{j,k} + \Theta_{j,k}' + \Upsilon_{j,k} \right] \estimLoadings{j}{k}&= Q_{j,k}\estimV{j}{k} \label{eq:V_basicRelation}
+\end{align}
+Let's decompose the LHS of this relation and analyze its convergence. First take, 
+\begin{align*}
+	\norm{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} \left [ K_{j,k} + \Upsilon_{j,k} \right] \estimLoadings{j}{k} - P_{j,k}Q_{j,k}} \leq \norm{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} \left [ K_{j,k} + \Upsilon_{j,k} \right] \estimLoadings{j}{k} - \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} N^{-1} \CEWS{j}{k} \estimLoadings{j}{k}} \\ + \norm{ \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} N^{-1} \CEWS{j}{k} \estimLoadings{j}{k} - \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'\loadings{j}{k}}{N}\estimCovFactorWav{j}{k}\frac{\loadings{j}{k}'\estimLoadings{j}{k}}{N}}
+\end{align*} 
+ The first term converges asymptotically to zero. To see this note that we can write :
+\begin{align*}
+	\norm{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} \left [ K_{j,k} + \Upsilon_{j,k} - N^{-1}\CEWS{j}{k} \right] \estimLoadings{j}{k}} 
+	& \leq \norm{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}}} \norm{\frac{\loadings{j}{k}'}{\sqrt{N}}} \norm{\left [ K_{j,k} + \Upsilon_{j,k} - N^{-1}\CEWS{j}{k} \right]} \norm{\frac{\estimLoadings{j}{k}}{\sqrt{N}}}
+\end{align*}
+All factors except the third one are bounded by assumption. The third term converges to zero since it is sufficient in $L_2$ space that its expectation along its variance converges to zero :
+\begin{align*}
+	\E{K_{j,k} + \Upsilon_{j,k} - N^{-1}\CEWS{j}{k}} &= \E{K_{j,k} + \Upsilon_{j,k}} - N^{-1} \\
+											   &= N^{-1} \CEWS{j}{k} - \E{\Upsilon_{j,k}} + \E{\Upsilon_{j,k}} - N^{-1} \CEWS{j}{k} + O(T^{-1}) &\text{ from theorem }\ref{thm:CEWS_Components}
+\\ &= O(T^{-1}) \to 0 \\
+	\Var{K_{j,k} + \Upsilon_{j,k} - N^{-1}\CEWS{j}{k}} &= \Var{K_{j,k} + \Upsilon_{j,k}} \to 0 & \text{ from lemma } \ref{lem:lemma2}
+\end{align*}
+
+It is a bit more difficult to show the convergence of the second term. 
+\begin{align*}
+	\norm{ \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'}{N} N^{-1} \CEWS{j}{k} \estimLoadings{j}{k} - \left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}} \frac{\loadings{j}{k}'\loadings{j}{k}}{N}\estimCovFactorWav{j}{k}\frac{\loadings{j}{k}'\estimLoadings{j}{k}}{N}} 
+\leq \norm{\left[\estimCovFactorWav{j}{k}\right]^{\frac{1}{2}}} \norm{\frac{\loadings{j}{k}'}{\sqrt{N}}} \norm{N^{-1}\CEWS{j}{k} - \frac{\loadings{j}{k}}{\sqrt{N}} \estimCovFactorWav{j}{k} \frac{\loadings{j}{k}'}{\sqrt{N}}} \norm{\frac{\estimLoadings{j}{k}}{\sqrt{N}}}
+\end{align*}
+All factors are bounded by assumption except the third one. The latter convergence to zero asymptotically. To see this, by \eqref{eq:estimCovFWav},
+\begin{align*}
+	\norm{N^{-1}\CEWS{j}{k} - \frac{\loadings{j}{k}}{\sqrt{N}} \estimCovFactorWav{j}{k} \frac{\loadings{j}{k}'}{\sqrt{N}}} 
+&= \norm{\frac{\loadings{j}{k}}{\sqrt{N}} \estimCovFactorWav{j}{k} \frac{\loadings{j}{k}'}{\sqrt{N}} - N^{-1}\CEWS{j}{k}}\\
+&= \norm{ \textcolor{blue}{\frac{\displaystyle 1}{\displaystyle 2M+1} \smoothsum{s} \locsum{m}} \frac{\loadings{j}{k}}{\sqrt{N}} \textcolor{blue}{\factors{m}\factors{m}'} \frac{\loadings{j}{k}'}{\sqrt{N}} \textcolor{blue}{\squaredWavelet{j}{k+s}{m}} - N^{-1}\CEWS{j}{k}} \\
+&= \norm{ \frac{\displaystyle 1}{\displaystyle 2M+1} \smoothsum{s} \underbrace{\left[ \locsum{m} \frac{\loadings{j}{k}}{\sqrt{N}} \factors{m}\factors{m}' \frac{\loadings{j}{k}'}{\sqrt{N}} \squaredWavelet{j}{k+s}{m} - N^{-1}\CEWS{j}{k} \right]}_{e_{j,k+s}}}
+\end{align*}
+This reorganization allows us to use a law of large number to show the convergence. The expectation of $e_{j,k+s}$ is given by :
+\begin{align*}
+	\E{e_{j,k+s}} &= \frac{\loadings{j}{k}}{\sqrt{N}} \left[ \locsum{m} \E{\factors{m}\factors{m}'} \squaredWavelet{j}{k+s}{m} - \E{\factors{m}\factors{m}'} \right] \frac{\loadings{j}{k}'}{\sqrt{N}} - N^{-1}\E{\idioError{j}{k+s}\idioError{j}{k+s}'}\\
+	&= \frac{\loadings{j}{k}}{\sqrt{N}} \left[\E{\factors{m}\factors{m}'} \locsum{m} \squaredWavelet{j}{k+s}{m} - \E{\factors{m}\factors{m}'} \right] \frac{\loadings{j}{k}'}{\sqrt{N}} - N^{-1}\E{\idioError{j}{k+s}\idioError{j}{k+s}'}
+\end{align*}
+By definition of wavelets we know that $\locsum{m} \squaredWavelet{j}{k+s}{m} \to 1$ when $M(T) \to \infty$. Finally since the covariance of the idiosyncratic has bounded eigenvalues by assumption on the factor model, the last term converges to zero when $N \to 0$. 
+
+% https://math.stackexchange.com/questions/245327/weak-law-of-large-numbers-for-dependent-random-variables-with-bounded-covariance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

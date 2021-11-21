@@ -11,6 +11,7 @@
 \usepackage{cancel} % strikethrough text
 
 \usepackage{subfiles} % manage multiple files document
+\usepackage[mode=buildnew]{standalone}
 
 \geometry{a4paper, portrait, margin=1cm}
 
@@ -22,6 +23,7 @@
 \renewcommand{\sum}{\displaystyle \oldsum}
 
 \newcommand{\abs}[1]{\left \lvert #1 \right \rvert}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
 \newcommand{\X}[1]{\bm{X_{#1;T}}}
 \newcommand{\eX}[2]{X_{#2;T}^{(#1)}}
@@ -30,6 +32,8 @@
 \newcommand{\CEWS}[2]{\bm{S}_{#1}\left(#2/T\right)}
 \newcommand{\eCEWS}[4]{S_{#3}^{(#1,#2)}\left(#4/T\right)}
 \newcommand{\wavelet}[3]{\psi_{#1,#2}(#3)}
+\newcommand{\waveletExp}[4]{\psi_{#1,#2}^{#4}(#3)}
+\newcommand{\squaredWavelet}[3]{\waveletExp{#1}{#2}{#3}{2}}
 \newcommand{\ACwavelet}[2]{\bm{\Psi}_{#1}(#2)}
 \newcommand{\CCwavelet}[3]{\bm{\Psi}_{#1,#2}(#3)}
 \newcommand{\increment}[2]{\bm{\xi}_{#1,#2}}
@@ -38,7 +42,8 @@
 \newcommand{\invA}[2]{\bar{A}_{#1,#2}}
 
 \newcommand{\scalesum}[1]{\sum_{#1=-J}^{-1}}
-\newcommand{\locsum}[1]{\sum_{#1=0}^{T}}
+\newcommand{\locsum}[1]{\sum_{#1=0}^{T-1}}
+\newcommand{\smoothsum}[1]{\sum_{#1=-M}^{M}}
 
 \newcommand{\kronecker}[2]{\delta_{#1,#2}}
 
@@ -50,6 +55,8 @@
 \newcommand{\estimCEWS}[2]{\widehat{\bm{S}}_{#1}\left(#2/T\right)}
 \newcommand{\estimLoadings}[2]{\widehat{\bm{\Lambda}}_{#1,#2}}
 \newcommand{\estimFactors}[1]{\widehat{\bm{F}}_{#1}}
+\newcommand{\estimEigs}[2]{\widehat{\bm{V}}_{#1,#2}}
+\newcommand{\estimInvEigs}[2]{\widehat{\bm{V}}_{#1,#2}^{-1}}
 
 \newcommand{\E}[1]{\mathrm{E}\left[#1\right]}
 \newcommand{\Var}[1]{\mathrm{Var}\left[#1\right]}
@@ -63,6 +70,16 @@
 \newcommand{\setOptFactors}{\{ \bar{\bm{F}}_{k}\}_{\forall j,k}}
 \newcommand{\idioError}[2]{\bm{\epsilon}_{#1,#2}}
 
+\newcommand{\R}[2]{\bm{R}_{#1,#2}}
+\newcommand{\invR}[2]{\bm{R}_{#1,#2}^{-1}}
+\newcommand{\estimR}[2]{\widehat{\bm{R}}_{#1,#2}}
+
+\newcommand{\V}[2]{\bm{V}_{#1,#2}}
+\newcommand{\invV}[2]{\bm{V}_{#1,#2}^{-1}}
+\newcommand{\estimV}[2]{\widehat{\bm{V}}_{#1,#2}}
+
+\newcommand{\estimCovFactorWav}[2]{\widehat{\bm{\Sigma}}_{#1,#2}^{F}}
+
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 
@@ -74,6 +91,10 @@
 \subfile{Estimation}
 
 \subfile{CEWS_Convergence}
+
+\subfile{RotationMatrix}
+
+\subfile{V_Matrix_Convergence}
 
 \clearpage
 \section{Lemmas}

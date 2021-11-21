@@ -1,0 +1,40 @@
+\documentclass[crop,tikz]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{intersections}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+\begin{tikzpicture}
+	\coordinate(O) at (0,0);
+	\coordinate[right=1cm of O] (StartRect1);
+	\node (zero) [below=0.1cm of StartRect1] {$0$};
+	\coordinate[right=10cm of O] (E);
+
+	\path[name path=line1, draw, ->] (O) -- (E);
+	\path[name path=line2, draw, ->] ($(O)+(0,2)$) -- ($(E)+(0,2)$);
+	\path[name path=rect1, draw] (StartRect1) rectangle ++(5,1);
+
+	\path[name intersections={of = rect1 and line1}];
+	\coordinate (EndRect1) at (intersection-2);
+	\node (support) [below=0.1cm of EndRect1] {$N_j-1$};
+	\coordinate (StartRect2) at ($(EndRect1) + (-2,0)$);
+	\node (support) [below=0.1cm of StartRect2] {$i$};
+	\coordinate (EndRect2) at ($(StartRect2)+(5,0)$);
+
+	\path[draw] (EndRect1) ++(-2,2) rectangle ++(5,1);
+	\node (support) [below=0.1cm of EndRect2] {$N_j-1+i$};
+
+	\draw[draw, dashed] (StartRect2) -- ($(StartRect2)+(0,2)$);
+	\draw[draw, dashed] ($(StartRect2)+(5,2)$) -- (EndRect2);
+	\draw[draw,dashed] ($(EndRect1)+(0,3)$) -- ($(EndRect1)+(0,1)$);
+
+	\path[draw=none] (StartRect1) rectangle ++(3,1) node[pos=.5]{$A$};
+	\path[draw=none] (StartRect2) rectangle ++(2,1) node[pos=.5]{$B_1$};
+	\path[draw=none] ($(StartRect2)+(0,2)$) rectangle ++(2,1) node[pos=.5]{$B_2$};
+	\path[draw=none] ($(EndRect1)+(0,2)$) rectangle ++(3,1) node[pos=.5]{$C$};
+\end{tikzpicture}
+
+\end{document}
